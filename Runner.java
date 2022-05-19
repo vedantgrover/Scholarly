@@ -27,4 +27,12 @@ public class Runner {
          * be able to finish this in time. At least fot he soft launch.
          */
     }
+
+
+    public static void Welcome() {
+      System.out.println("Welcome to SCHOLARLY Student Resource");
+      System.out.println("Press (A) for Admin");
+      System.out.println("Press (C) for Customer login");
+       
+    }
 }
