@@ -24,7 +24,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
-        // welcomePage();
         new WelcomeFrame();
         // this.setVisible(true);
 
@@ -38,7 +37,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private JButton registerButton;
 
         public WelcomeFrame() {
-            this.setTitle("Scholarly");
+            this.setTitle("Scholarly Connect");
             this.setIconImage(icon.getImage());
             this.setResizable(false);
             this.setSize(WIDTH, HEIGHT);

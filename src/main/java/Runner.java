@@ -29,6 +29,13 @@ public class Runner {
          * 
          * This is a lot of stuff but I think with three people working on it, we should
          * be able to finish this in time. At least fot he soft launch.
+         * 
+         * Stuff:
+         *  - Get MongoDB Set up and learn the code
+         *  - Login and Registeration (Includes the GUIs)
+         *  - Make the Actual GUI
+         *  - Create Visual Profiles for each tutor.
+         *  - Apply for tutor job. Update DB
          */
 
          
