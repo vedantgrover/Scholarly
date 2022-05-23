@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
@@ -11,8 +15,14 @@ public class Customer {
      */
     String userName;
     int userID;
+    String organization;
+    String userPassword;
+    String userSubjects;
+    boolean isAdmin;
+
     boolean isTutor;
     boolean isLocked;
+    boolean wantsHelp;
     boolean mathTrue;
     boolean scienceTrue;
     boolean englishTrue;
@@ -30,12 +40,144 @@ public class Customer {
         this.isTutor = isTutor;
     }
 
+    public Customer(String userName, int userID, String organization,
+                     String userPassword,boolean isAdmin, String subjects) {
+        this.userName = userName;
+        this.userID = userID;
+        this.organization = organization;
+        this.isAdmin =isAdmin;
+        this.userPassword = userPassword;
+
+        String[] tempStuff = subjects.split(",");
+
+        while(tempStuff.length<0){
+
+        if(subjects.toLowerCase().equals("history")) {
+            this.historyTrue = true;
+        }
+        if(subjects.toLowerCase().equals("english")) {
+            this.englishTrue = true;
+        }
+        if(subjects.toLowerCase().equals("math")) {
+            this.mathTrue = true;
+        }
+        if(subjects.toLowerCase().equals("science")) {
+            this.scienceTrue = true;
+        }
+
+        
+
+        int a = 0;
+
+        while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==0){
+            if(subjects.toLowerCase().equals("history") && a==0) {
+                userSubjects+="history";
+                a++;
+            }
+            if(subjects.toLowerCase().equals("english") && a==0) {
+                userSubjects+="english";
+                a++;
+            }
+            if(subjects.toLowerCase().equals("math") && a==0) {
+                userSubjects+="math";
+                a++;
+            }
+            if(subjects.toLowerCase().equals("science") && a==0) {
+                userSubjects+="science";
+                a++;
+            }
+        }
+        while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==1){
+            if(tempStuff[1].equals("history")) {
+                userSubjects+=",history";
+                a++;
+            }
+            if(tempStuff[1].equals("english")) {
+                userSubjects+=",english";
+                a++;
+            }
+            if(tempStuff[1].equals("math")) {
+                userSubjects+=",math";
+                a++;
+            }
+            if(tempStuff[1].equals("science")) {
+                userSubjects+=",science";
+                a++;
+            }
+        }
+        while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==2){
+            if(tempStuff[2].equals("history")) {
+                userSubjects+=",history";
+                a++;
+            }
+            if(tempStuff[2].equals("english")) {
+                userSubjects+=",english";
+                a++;
+            }
+            if(tempStuff[2].equals("math")) {
+                userSubjects+=",math";
+                a++;
+            }
+            if(tempStuff[2].equals("science")) {
+                userSubjects+=",science";
+                a++;
+            }
+        }
+        while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==3){
+            if(tempStuff[3].equals("history")) {
+                userSubjects+=",history";
+                a++;
+            }
+            if(tempStuff[3].equals("english")) {
+                userSubjects+=",english";
+                a++;
+            }
+            if(tempStuff[3].equals("math")) {
+                userSubjects+=",math";
+                a++;
+            }
+            if(tempStuff[3].equals("science")) {
+                userSubjects+=",science";
+                a++;
+            }
+        }
+    }
+    csvWriter(userID, organization, userName, userPassword, isAdmin, subjects);
+}
+
+    public void csvWriter(int userID, String organization, String userName, String password, boolean Admin, String Subjects){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("AllRegisteredUsers.csv"));
+            writer.write(userID+","+organization+","+userName+","+password+","+Admin+","+Subjects+"\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error reading from database files");
+            e.printStackTrace();
+        }
+    }
+
+    //Incomplete
     public void login() {
         System.out.println("Enter user name: \n");
         Scanner sc = new Scanner(System.in);
         String a = sc.nextLine();
 
     }
+
+
+    //This too is incomplete
+    public String userWantsHelp(boolean mathTrue, boolean scienceTrue, boolean englishTrue, boolean historyTrue){
+        if (mathTrue || scienceTrue || englishTrue || historyTrue == true){
+            return "something lol"; 
+        }
+        return "not complete";
+    }
+
+    
+
+
+
+
 
     public String getuserName() {
         return userName;
