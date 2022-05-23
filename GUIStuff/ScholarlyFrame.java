@@ -43,6 +43,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.setResizable(false);
             this.setSize(WIDTH, HEIGHT);
             this.setLocationRelativeTo(null);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setVisible(true);
 
             JPanel welcomeInfo = new JPanel();
