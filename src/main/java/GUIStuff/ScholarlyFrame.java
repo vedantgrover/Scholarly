@@ -3,6 +3,7 @@ package GUIStuff;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -37,9 +38,9 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private JButton registerButton;
 
         private static JLabel password1, label;
-        private static JTextField username;
+        public static JTextField username;
         private static JButton button;
-        private static JPasswordField Password;
+        public static JPasswordField Password;
 
         public WelcomeFrame() {
             this.setTitle("Scholarly Connect");
@@ -97,13 +98,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.setVisible(true);
         }
 
-        public String[] loginGUI() {
+        public void loginGUI() {
             JPanel panel = new JPanel();
             panel.setLayout(null);
 
             JFrame frame = new JFrame();
             frame.setTitle("Login Page");
-            frame.setLocation(new Point(500, 500));
+            frame.setLocationRelativeTo(null);
             frame.add(panel);
             frame.setSize(new Dimension(400, 200));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,27 +129,22 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button.setBounds(100, 110, 90, 25);
             button.setForeground(Color.WHITE);
             button.setBackground(Color.BLACK);
-            button.addActionListener(this);
+            button.addActionListener(e -> {
+                frame.dispose();
+                System.out.println("Username: " + username.getText() + "\nPassword: " + Password.getText() + "\n");
+            });
             panel.add(button);
 
             frame.setVisible(true);
-
-            String[] result = {username.getText(), Password.getPassword().toString()};
-            return result;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 this.dispose();
-                this.loginGUI();
-                System.out.println("Login Granted");               
+                this.loginGUI();         
             } else if (e.getSource() == registerButton) {
                 System.out.println("Register Requested");
-            }
-
-            if (e.getSource() == button) {
-
             }
         }
 
