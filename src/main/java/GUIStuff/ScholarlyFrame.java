@@ -36,6 +36,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private JButton loginButton;
         private JButton registerButton;
 
+        private static JLabel password1, label;
+        private static JTextField username;
+        private static JButton button;
+        private static JPasswordField Password;
+
         public WelcomeFrame() {
             this.setTitle("Scholarly Connect");
             this.setIconImage(icon.getImage());
@@ -43,7 +48,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.setSize(WIDTH, HEIGHT);
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setVisible(true);
 
             JPanel welcomeInfo = new JPanel();
             // welcomeInfo.setSize(new Dimension(100, 100)); // Check why this isn't
@@ -89,14 +93,62 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.getContentPane().add(blackBorder1, BorderLayout.LINE_START);
             this.getContentPane().add(blueBorder2, BorderLayout.PAGE_END);
             this.getContentPane().add(blackBorder2, BorderLayout.LINE_END);
+
+            this.setVisible(true);
+        }
+
+        public String[] loginGUI() {
+            JPanel panel = new JPanel();
+            panel.setLayout(null);
+
+            JFrame frame = new JFrame();
+            frame.setTitle("Login Page");
+            frame.setLocation(new Point(500, 500));
+            frame.add(panel);
+            frame.setSize(new Dimension(400, 200));
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            label = new JLabel("Username");
+            label.setBounds(100, 8, 70, 20);
+            panel.add(label);
+
+            username = new JTextField();
+            username.setBounds(100, 27, 193, 28);
+            panel.add(username);
+
+            password1 = new JLabel("Password");
+            password1.setBounds(100, 55, 70, 20);
+            panel.add(password1);
+
+            Password = new JPasswordField();
+            Password.setBounds(100, 75, 193, 28);
+            panel.add(Password);
+
+            button = new JButton("Login");
+            button.setBounds(100, 110, 90, 25);
+            button.setForeground(Color.WHITE);
+            button.setBackground(Color.BLACK);
+            button.addActionListener(this);
+            panel.add(button);
+
+            frame.setVisible(true);
+
+            String[] result = {username.getText(), Password.getPassword().toString()};
+            return result;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
-                System.out.println("Login Requested");
+                this.dispose();
+                this.loginGUI();
+                System.out.println("Login Granted");               
             } else if (e.getSource() == registerButton) {
                 System.out.println("Register Requested");
+            }
+
+            if (e.getSource() == button) {
+
             }
         }
 
