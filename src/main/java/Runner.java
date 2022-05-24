@@ -32,6 +32,7 @@ public class Runner {
      * 
      * Stuff:
      * - Get MongoDB Set up and learn the code
+     *    - If we can get this to work, CSV file will no longer be needed.
      * - Login and Registeration (Includes the GUIs)
      * - Make the Actual GUI
      * - Create Visual Profiles for each tutor.
