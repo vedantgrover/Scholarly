@@ -6,6 +6,8 @@ public class Runner {
 
         new ScholarlyFrame();
 
+        
+
         /**
          * TODO:
          * Necessary Stuff

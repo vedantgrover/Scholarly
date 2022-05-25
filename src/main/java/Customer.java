@@ -88,55 +88,55 @@ public class Customer {
             }
         }
         while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==1){
-            if(tempStuff[1].equals("history")) {
+            if(tempStuff[1].equals("history") && a==1) {
                 userSubjects+=",history";
                 a++;
             }
-            if(tempStuff[1].equals("english")) {
+            if(tempStuff[1].equals("english") && a==1) {
                 userSubjects+=",english";
                 a++;
             }
-            if(tempStuff[1].equals("math")) {
+            if(tempStuff[1].equals("math") && a==1) {
                 userSubjects+=",math";
                 a++;
             }
-            if(tempStuff[1].equals("science")) {
+            if(tempStuff[1].equals("science") && a==1) {
                 userSubjects+=",science";
                 a++;
             }
         }
         while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==2){
-            if(tempStuff[2].equals("history")) {
+            if(tempStuff[2].equals("history") && a==2) {
                 userSubjects+=",history";
                 a++;
             }
-            if(tempStuff[2].equals("english")) {
+            if(tempStuff[2].equals("english") && a==2) {
                 userSubjects+=",english";
                 a++;
             }
-            if(tempStuff[2].equals("math")) {
+            if(tempStuff[2].equals("math") && a==2) {
                 userSubjects+=",math";
                 a++;
             }
-            if(tempStuff[2].equals("science")) {
+            if(tempStuff[2].equals("science") && a==2) {
                 userSubjects+=",science";
                 a++;
             }
         }
         while (scienceTrue==true || mathTrue==true || englishTrue==true || historyTrue== true && a==3){
-            if(tempStuff[3].equals("history")) {
+            if(tempStuff[3].equals("history")  && a==3) {
                 userSubjects+=",history";
                 a++;
             }
-            if(tempStuff[3].equals("english")) {
+            if(tempStuff[3].equals("english") && a==3) {
                 userSubjects+=",english";
                 a++;
             }
-            if(tempStuff[3].equals("math")) {
+            if(tempStuff[3].equals("math") && a==3) {
                 userSubjects+=",math";
                 a++;
             }
-            if(tempStuff[3].equals("science")) {
+            if(tempStuff[3].equals("science") && a==3) {
                 userSubjects+=",science";
                 a++;
             }
@@ -157,12 +157,12 @@ public class Customer {
     }
 
     //Incomplete
-    public void login() {
+   /* public void login() {
         System.out.println("Enter user name: \n");
         Scanner sc = new Scanner(System.in);
         String a = sc.nextLine();
 
-    }
+    } */
 
 
     //This too is incomplete
