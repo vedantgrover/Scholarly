@@ -156,7 +156,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 this.dispose();
-                this.loginGUI();         
+                this.loginGUI();
             } else if (e.getSource() == registerButton) {
                 System.out.println("Register Requested");
             }
