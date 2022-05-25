@@ -1,10 +1,10 @@
 import GUIStuff.ScholarlyFrame;
 
 public class Runner {
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+  public static void main(String[] args) {
+    System.out.println("Hello World!");
 
-        new ScholarlyFrame();
+    new ScholarlyFrame();
 
         
 
@@ -33,15 +33,12 @@ public class Runner {
          * be able to finish this in time. At least fot he soft launch.
          */
 
-         
-        
-    }
+  }
 
+  public static void Welcome() {
+    System.out.println("Welcome to SCHOLARLY Student Resource");
+    System.out.println("Press (A) for Admin");
+    System.out.println("Press (C) for Customer login");
 
-    public static void Welcome() {
-      System.out.println("Welcome to SCHOLARLY Student Resource");
-      System.out.println("Press (A) for Admin");
-      System.out.println("Press (C) for Customer login");
-       
-    }
+  }
 }

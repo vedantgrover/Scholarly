@@ -30,17 +30,17 @@ public class Customer {
 
     static int var = 0;
 
-    public Customer(String userName) {
+    protected Customer(String userName) {
         this.userName = userName;
         isTutor = false;
     }
 
-    public Customer(String userName, boolean isTutor) {
+    protected Customer(String userName, boolean isTutor) {
         this.userName = userName;
         this.isTutor = isTutor;
     }
 
-    public Customer(String userName, int userID, String organization,
+    protected Customer(String userName, int userID, String organization,
                      String userPassword,boolean isAdmin, String subjects) {
         this.userName = userName;
         this.userID = userID;

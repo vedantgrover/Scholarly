@@ -3,6 +3,7 @@ package GUIStuff;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -24,7 +25,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
-        // welcomePage();
         new WelcomeFrame();
         // this.setVisible(true);
 
@@ -37,14 +37,19 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private JButton loginButton;
         private JButton registerButton;
 
+        private static JLabel password1, label;
+        public static JTextField username;
+        private static JButton button;
+        private static JButton backToButton;
+        public static JPasswordField Password;
+
         public WelcomeFrame() {
-            this.setTitle("Scholarly");
+            this.setTitle("Scholarly Connect");
             this.setIconImage(icon.getImage());
             this.setResizable(false);
             this.setSize(WIDTH, HEIGHT);
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setVisible(true);
 
             JPanel welcomeInfo = new JPanel();
             // welcomeInfo.setSize(new Dimension(100, 100)); // Check why this isn't
@@ -90,12 +95,68 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.getContentPane().add(blackBorder1, BorderLayout.LINE_START);
             this.getContentPane().add(blueBorder2, BorderLayout.PAGE_END);
             this.getContentPane().add(blackBorder2, BorderLayout.LINE_END);
+
+            this.setVisible(true);
+        }
+
+        public void loginGUI() {
+            JPanel panel = new JPanel();
+            panel.setLayout(null);
+
+            JFrame frame = new JFrame();
+            frame.setTitle("Login Page");
+            frame.setLocationRelativeTo(null);
+            frame.add(panel);
+            frame.setSize(new Dimension(400, 200));
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setIconImage(icon.getImage());
+
+            label = new JLabel("Username");
+            label.setBounds(100, 8, 70, 20);
+            panel.add(label);
+
+            username = new JTextField();
+            username.setBounds(100, 27, 193, 28);
+            panel.add(username);
+
+            password1 = new JLabel("Password");
+            password1.setBounds(100, 55, 70, 20);
+            panel.add(password1);
+
+            Password = new JPasswordField();
+            Password.setBounds(100, 75, 193, 28);
+            panel.add(Password);
+
+            button = new JButton("Login");
+            button.setBounds(100, 110, 90, 25);
+            button.setForeground(Color.WHITE);
+            button.setBackground(Color.BLACK);
+            button.addActionListener(e -> {
+                frame.dispose();
+                System.out.println("Username: " + username.getText() + "\nPassword: " + Password.getText() + "\n");
+            });
+            panel.add(button);
+
+            backToButton = new JButton("Back");
+            backToButton.setBounds(25, 125, 45, 25);
+            backToButton.setBackground(Color.white);
+            backToButton.addActionListener(e -> {
+                frame.dispose();
+                new WelcomeFrame();
+            });
+            backToButton.setMargin(new Insets(0, 0, 0, 0));
+            backToButton.setFocusable(false);
+            panel.add(backToButton);
+
+            frame.setVisible(true);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
-                System.out.println("Login Requested");
+                this.dispose();
+                this.loginGUI();
             } else if (e.getSource() == registerButton) {
                 System.out.println("Register Requested");
             }
