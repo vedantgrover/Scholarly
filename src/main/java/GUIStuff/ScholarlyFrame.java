@@ -43,6 +43,10 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private static JButton backToButton;
         public static JPasswordField Password;
 
+        private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel;
+        private static JTextField firstName, lastName, org, registerUsername, password;
+        private static JButton register, back;
+
         public WelcomeFrame() {
             this.setTitle("Scholarly Connect");
             this.setIconImage(icon.getImage());
@@ -152,13 +156,55 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setVisible(true);
         }
 
+        public void registerGUI() {
+            JPanel basicPanel = new JPanel();
+            basicPanel.setLayout(null);
+
+            JFrame frame = new JFrame();
+            frame.setTitle("Login Page");
+            frame.setLocationRelativeTo(null);
+            frame.add(basicPanel);
+            frame.setSize(new Dimension(400, 600));
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setIconImage(icon.getImage());
+
+            firstNameLabel = new JLabel("First Name");
+            firstNameLabel.setBounds(100, 8, 70, 20);
+            basicPanel.add(firstNameLabel);
+
+            firstName = new JTextField();
+            firstName.setBounds(100, 27, 193, 28);
+            basicPanel.add(firstName);
+
+            lastNameLabel = new JLabel("Last Name");
+            lastNameLabel.setBounds(100, 55, 70, 20);
+            basicPanel.add(lastNameLabel);
+
+            lastName = new JTextField();
+            lastName.setBounds(100, 75, 193, 28);
+            basicPanel.add(lastName);
+
+            orgLabel = new JLabel("Organization");
+            orgLabel.setBounds(100, 102, 70, 20);
+            basicPanel.add(orgLabel);
+
+            org = new JTextField();
+            org.setBounds(100, 121, 193, 28);
+            basicPanel.add(org);
+
+            frame.setVisible(true);
+
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
                 this.dispose();
                 this.loginGUI();
             } else if (e.getSource() == registerButton) {
-                System.out.println("Register Requested");
+                this.dispose();
+                this.registerGUI();
             }
         }
 
