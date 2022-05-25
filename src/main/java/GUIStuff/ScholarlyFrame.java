@@ -40,6 +40,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private static JLabel password1, label;
         public static JTextField username;
         private static JButton button;
+        private static JButton backToButton;
         public static JPasswordField Password;
 
         public WelcomeFrame() {
@@ -108,6 +109,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.add(panel);
             frame.setSize(new Dimension(400, 200));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setIconImage(icon.getImage());
 
             label = new JLabel("Username");
             label.setBounds(100, 8, 70, 20);
@@ -134,6 +137,17 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 System.out.println("Username: " + username.getText() + "\nPassword: " + Password.getText() + "\n");
             });
             panel.add(button);
+
+            backToButton = new JButton("Back");
+            backToButton.setBounds(25, 125, 45, 25);
+            backToButton.setBackground(Color.white);
+            backToButton.addActionListener(e -> {
+                frame.dispose();
+                new WelcomeFrame();
+            });
+            backToButton.setMargin(new Insets(0, 0, 0, 0));
+            backToButton.setFocusable(false);
+            panel.add(backToButton);
 
             frame.setVisible(true);
         }
