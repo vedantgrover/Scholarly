@@ -47,6 +47,9 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private static JTextField firstName, lastName, org, registerUsername, password;
         private static JButton register, back;
 
+        private static final String BASIC_INFO = "Basic Info";
+        private static final String LOGIN_INFO = "Login Info";
+
         public WelcomeFrame() {
             this.setTitle("Scholarly Connect");
             this.setIconImage(icon.getImage());
@@ -157,6 +160,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         }
 
         public void registerGUI() {
+            JTabbedPane pane = new JTabbedPane();
+
             JPanel basicPanel = new JPanel();
             basicPanel.setLayout(null);
 
@@ -164,7 +169,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setTitle("Login Page");
             frame.setLocationRelativeTo(null);
             frame.add(basicPanel);
-            frame.setSize(new Dimension(400, 600));
+            frame.setSize(new Dimension(400, 300));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
             frame.setIconImage(icon.getImage());
@@ -186,12 +191,56 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             basicPanel.add(lastName);
 
             orgLabel = new JLabel("Organization");
-            orgLabel.setBounds(100, 102, 70, 20);
+            orgLabel.setBounds(100, 102, 100, 20);
             basicPanel.add(orgLabel);
 
             org = new JTextField();
             org.setBounds(100, 121, 193, 28);
             basicPanel.add(org);
+
+            back = new JButton("Back");
+            back.setBounds(25, 125, 45, 25);
+            back.setBackground(Color.white);
+            back.addActionListener(e -> {
+                frame.dispose();
+                new WelcomeFrame();
+            });
+            back.setMargin(new Insets(0, 0, 0, 0));
+            back.setFocusable(false);
+            basicPanel.add(back);
+
+            JPanel loginPanel = new JPanel();
+            loginPanel.setLayout(null);
+
+            usernameLabel = new JLabel("Username");
+            usernameLabel.setBounds(100, 8, 70, 20);
+            loginPanel.add(usernameLabel);
+
+            registerUsername = new JTextField();
+            registerUsername.setBounds(100, 27, 193, 28);
+            loginPanel.add(registerUsername);
+
+            passwordLabel = new JLabel("Password");
+            passwordLabel.setBounds(100, 55, 70, 20);
+            loginPanel.add(passwordLabel);
+
+            password = new JTextField();
+            password.setBounds(100, 75, 193, 28);
+            loginPanel.add(password);
+
+            register = new JButton("Register");
+            register.setBounds(100, 110, 90, 25);
+            register.setForeground(Color.WHITE);
+            register.setBackground(Color.BLACK);
+            register.addActionListener(e -> frame.dispose());
+            loginPanel.add(register);
+
+            loginPanel.add(back);
+
+            pane.add(BASIC_INFO, basicPanel);
+            pane.add(LOGIN_INFO, loginPanel);
+
+            frame.getContentPane().add(pane);
 
             frame.setVisible(true);
 
