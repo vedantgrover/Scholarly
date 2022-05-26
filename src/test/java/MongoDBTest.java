@@ -14,19 +14,19 @@ import org.bson.Document;
  * This what I have learnt so far. I will be learning more later.
  */
 
-public class MongoDB {
+public class MongoDBTest {
     public static MongoClient mongoClient; // The overall server. Connection is handled through here.
     public static MongoDatabase database; // The thingiemabobber that stores the Collections of Documents.
     public static MongoCollection<Document> testDocs; // The thing that stores the documents. (Collection)
     public static void main(String[] args) {
-        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
-        database = mongoClient.getDatabase("TestData"); // Grabbing all the data from the database and making it interactable with the code.
-        testDocs = database.getCollection("test"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
+        //mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
+        database = mongoClient.getDatabase("VAC"); // Grabbing all the data from the database and making it interactable with the code.
+        testDocs = database.getCollection("userData"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
 
         Person jeff = new Person("jefferyb", "jeffbisrich", "amazonhs", false, false, "Knows computer science and coding. I am Rich."); // A person with all of these. All of this will be stored in the Database
         Person mark = new Person("markz", "markzisrich", "metahs", false, false, "Knows computer science and coding. I am Rich."); // Another rich person. 
         testDocs.insertOne(convert(jeff)); // Putting rich person into the Collection named Test
-        Document query = new Document("isTutor", true); // Just an example of a query. This will set the query to search for all of the documents with the "isTutor" value set to true.
+        Document query = new Document("isTutor", false); // Just an example of a query. This will set the query to search for all of the documents with the "isTutor" value set to true.
         FindIterable<Document> cursor = testDocs.find(); // Grabs all the documents with the query filter up above.
         System.out.println("\n" + cursor.first()); // Prints out the first document with the isAdmin set to jeff object isAdmin.
 
@@ -53,7 +53,7 @@ public class MongoDB {
         }
 
         query = new Document();
-        //testDocs.deleteMany(query);
+        testDocs.deleteMany(query);
 
         
     }

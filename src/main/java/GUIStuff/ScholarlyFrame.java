@@ -3,12 +3,13 @@ package GUIStuff;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import VAC.MongoDB;
 
 public class ScholarlyFrame extends JFrame implements ActionListener {
 
@@ -43,8 +44,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         private static JButton backToButton;
         public static JPasswordField Password;
 
-        private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel;
-        private static JTextField firstName, lastName, org, registerUsername, password;
+        private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel, emailLabel;
+        public static JTextField firstName, lastName, org, registerUsername, password, email;
         private static JButton register, back;
 
         private static final String BASIC_INFO = "Basic Info";
@@ -159,6 +160,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setVisible(true);
         }
 
+        private static MongoDB db = new MongoDB();
         public void registerGUI() {
             JTabbedPane pane = new JTabbedPane();
 
@@ -190,12 +192,20 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             lastName.setBounds(100, 75, 193, 28);
             basicPanel.add(lastName);
 
+            emailLabel = new JLabel("Email");
+            emailLabel.setBounds(100, 102, 70, 20);
+            basicPanel.add(emailLabel);
+
+            email = new JTextField();
+            email.setBounds(100, 121, 193, 28);
+            basicPanel.add(email);
+
             orgLabel = new JLabel("Organization");
-            orgLabel.setBounds(100, 102, 100, 20);
+            orgLabel.setBounds(100, 149, 100, 20);
             basicPanel.add(orgLabel);
 
             org = new JTextField();
-            org.setBounds(100, 121, 193, 28);
+            org.setBounds(100, 168, 193, 28);
             basicPanel.add(org);
 
             back = new JButton("Back");
@@ -232,7 +242,10 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             register.setBounds(100, 110, 90, 25);
             register.setForeground(Color.WHITE);
             register.setBackground(Color.BLACK);
-            register.addActionListener(e -> frame.dispose());
+            register.addActionListener(e -> {
+                db.createUser(firstName.getText(), lastName.getText(), email.getText(), org.getText(), registerUsername.getText(), password.getText());
+                frame.dispose();
+            });
             loginPanel.add(register);
 
             loginPanel.add(back);
