@@ -32,6 +32,20 @@ public class Runner {
          * 
          * This is a lot of stuff but I think with three people working on it, we should
          * be able to finish this in time. At least fot he soft launch.
+         * 
+         * Agenda:
+         *  - Set up MongoDB
+         *  - Set up Registration and Login (WITH GUI)
+         *  - Create Scroll Panel with all the Tutors
+         *  - Create Tutor sign up
+         *  - Create description box
+         *  - Create command box
+         * Soft Launch Happens
+         *  - Make the Wix Site for downloading and collecting payment for software (lifetime for now. will change to monthly once we figure out how)
+         *  - Create the Discord Server.
+         *  - Create the Discord Bot for server moderation.
+         * Final Presentation (if we get investors)
+         *  - **We choose if we want to continue this project and see if it goes anywhere**.
          */
 
   }
