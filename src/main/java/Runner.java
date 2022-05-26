@@ -34,7 +34,7 @@ public class Runner {
          * be able to finish this in time. At least fot he soft launch.
          * 
          * Agenda:
-         *  - Set up MongoDB
+         *  - ✅ Set up MongoDB
          *  - Set up Registration and Login (WITH GUI)
          *  - Create Scroll Panel with all the Tutors
          *  - Create Tutor sign up
