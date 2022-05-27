@@ -10,6 +10,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import VAC.MongoDB;
+import VAC.Scholarly;
 
 public class ScholarlyFrame extends JFrame implements ActionListener {
 
@@ -19,6 +20,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private URL iconURL = getClass().getResource("logo.png");
     private ImageIcon icon = new ImageIcon(iconURL);
 
+    private static Object lock = new Object();
+
     public ScholarlyFrame() {
         this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,14 +29,18 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
-        new WelcomeFrame();
-        // this.setVisible(true);
+        WelcomeFrame wFrame = new WelcomeFrame();
+        while (!Scholarly.loggedIn) {
+            System.out.println();
+        }
+        this.setVisible(true);
 
     }
 
     public class WelcomeFrame extends JFrame implements ActionListener {
         private final int WIDTH = ScholarlyFrame.WIDTH / 2;
         private final int HEIGHT = ScholarlyFrame.HEIGHT / 2;
+        private static MongoDB db = new MongoDB();
 
         private JButton loginButton;
         private JButton registerButton;
@@ -141,8 +148,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button.setForeground(Color.WHITE);
             button.setBackground(Color.BLACK);
             button.addActionListener(e -> {
-                frame.dispose();
-                System.out.println("Username: " + username.getText() + "\nPassword: " + Password.getText() + "\n");
+                if (Scholarly.login(username.getText(), Password.getText())) {
+                    System.out.println("Login Successful");
+                    Scholarly.loggedIn = true;
+                    frame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Incorrect username or password");
+                }
             });
             panel.add(button);
 
@@ -160,7 +172,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setVisible(true);
         }
 
-        private static MongoDB db = new MongoDB();
         public void registerGUI() {
             JTabbedPane pane = new JTabbedPane();
 
@@ -243,8 +254,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             register.setForeground(Color.WHITE);
             register.setBackground(Color.BLACK);
             register.addActionListener(e -> {
-                db.createUser(firstName.getText(), lastName.getText(), email.getText(), org.getText(), registerUsername.getText(), password.getText());
-                frame.dispose();
+                if (!db.createUser(firstName.getText(), lastName.getText(), email.getText(), org.getText(),
+                        registerUsername.getText(), password.getText())) {
+                    JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+                } else {
+                    frame.dispose();
+                    this.loginGUI();
+                }
             });
             loginPanel.add(register);
 
