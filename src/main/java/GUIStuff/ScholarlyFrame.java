@@ -15,12 +15,11 @@ import VAC.Scholarly;
 public class ScholarlyFrame extends JFrame implements ActionListener {
 
     private static final int WIDTH = 1000;
-    private static final int HEIGHT = 1000;
+    private static final int HEIGHT = 600;
+    private static final MongoDB db = new MongoDB();
 
     private URL iconURL = getClass().getResource("logo.png");
     private ImageIcon icon = new ImageIcon(iconURL);
-
-    private static Object lock = new Object();
 
     public ScholarlyFrame() {
         this.setIconImage(icon.getImage());
@@ -29,10 +28,39 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
-        WelcomeFrame wFrame = new WelcomeFrame();
+        this.setResizable(false);
+        new WelcomeFrame();
         while (!Scholarly.loggedIn) {
             System.out.println();
         }
+
+        String tier;
+
+        JPanel loginInfoPanel = new JPanel();
+        loginInfoPanel.setLayout(null);
+
+        JLabel userName = new JLabel("Username: " + WelcomeFrame.username.getText());
+        userName.setBounds(WIDTH/4 - 75, 10, 150, 25);
+        loginInfoPanel.add(userName);
+
+        JButton name = new JButton(db.findUser(WelcomeFrame.username.getText()).get("name").toString());
+        name.setBounds(WIDTH/2 - 75, 10, 150, 25);
+        loginInfoPanel.add(name);
+
+        if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isAdmin")) {
+            tier = "Administrator";
+        } else if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isTutor")) {
+            tier = "Tutor";
+        } else {
+            tier = "Student";
+        }
+
+        JLabel custTier = new JLabel("Tier: " + tier);
+        custTier.setBounds(750 - 75, 10, 150, 25);
+        loginInfoPanel.add(custTier);
+
+        this.getContentPane().add(loginInfoPanel);
+
         this.setVisible(true);
 
     }
@@ -40,7 +68,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     public class WelcomeFrame extends JFrame implements ActionListener {
         private final int WIDTH = ScholarlyFrame.WIDTH / 2;
         private final int HEIGHT = ScholarlyFrame.HEIGHT / 2;
-        private static MongoDB db = new MongoDB();
+        //private static MongoDB db = new MongoDB();
 
         private JButton loginButton;
         private JButton registerButton;
