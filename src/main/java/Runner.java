@@ -7,8 +7,6 @@ public class Runner {
 
     new ScholarlyFrame();
     
-    
-
         /**
          * TODO:
          * Necessary Stuff
@@ -35,7 +33,7 @@ public class Runner {
          * 
          * Agenda:
          *  - ✅ Set up MongoDB
-         *  - Set up Registration and Login (WITH GUI)
+         *  - ✅ Set up Registration and Login (WITH GUI)
          *  - Create Scroll Panel with all the Tutors
          *  - Create Tutor sign up
          *  - Create description box
