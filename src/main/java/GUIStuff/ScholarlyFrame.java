@@ -22,6 +22,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private ImageIcon icon = new ImageIcon(iconURL);
 
     public ScholarlyFrame() {
+        this.setTitle("Scholarly Connect");
         this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
