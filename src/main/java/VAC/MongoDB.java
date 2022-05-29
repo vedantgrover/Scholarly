@@ -47,5 +47,10 @@ public class MongoDB {
         data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("organization", org).append("username", username).append("password", password).append("isAdmin", false).append("isTutor", false));
         return true;
     }
+
+    public String userInfo(){
+        
+        return "lol";
+    }
     
 }
