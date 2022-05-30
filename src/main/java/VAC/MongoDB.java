@@ -8,7 +8,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+
+import javax.print.Doc;
 
 /**
  * The Code that I wrote within this class is a bit of an example on what we COULD do when we register users into the DB. 
@@ -39,18 +42,30 @@ public class MongoDB {
         return data.find(new Document("username", username)).first();
     }
 
+    public Document findUserByName(String name) {
+        return data.find(new Document("name", name)).first();
+    }
+
     public boolean createUser(String firstName, String lastName, String email, String org, String username, String password) {
+        boolean isAdmin = false;
         if (checkIfUserExists(username)) {
             return false;
+        }
+
+        if (data.countDocuments(new Document("org", org)) == 0) {
+            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false));
+            return true;
         }
 
         data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("organization", org).append("username", username).append("password", password).append("isAdmin", false).append("isTutor", false));
         return true;
     }
 
-    public String userInfo(){
-        
-        return "lol";
+    public FindIterable<Document> getTutors(String org) {
+        Document query = new Document("organization", org).append("isTutor", true);
+        FindIterable<Document> docs = data.find(query);
+
+        return docs;
     }
     
 }
