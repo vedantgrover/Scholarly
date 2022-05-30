@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +16,8 @@ import javax.swing.text.StyledDocument;
 
 import VAC.MongoDB;
 import VAC.Scholarly;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
 
 public class ScholarlyFrame extends JFrame implements ActionListener {
 
@@ -21,10 +25,17 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private static final int HEIGHT = 600;
     private static final MongoDB db = new MongoDB();
 
-    private URL iconURL = getClass().getResource("logo.png");
+    private static JFrame myFrame;
+
+    private static int maxTutors = 200;
+
+    private static ArrayList<Document> tutors = new ArrayList<Document>();
+    private static ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
+
+    //private URL iconURL = getClass().getResource("logo.png");
     //private ImageIcon icon = new ImageIcon(iconURL);
 
-    private BufferedImage image;
+    BufferedImage image;
 
     public ScholarlyFrame() {
         try {
@@ -32,15 +43,15 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.setTitle("Scholarly Connect");
-        this.setIconImage(image);
+        myFrame = this;
+        //this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
         this.setResizable(false);
+        this.setLayout(null);
         new WelcomeFrame();
         while (!Scholarly.loggedIn) {
             System.out.println();
@@ -50,13 +61,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JPanel loginInfoPanel = new JPanel();
         loginInfoPanel.setLayout(null);
+        loginInfoPanel.setBounds(0, 0, 985, 45);
 
         JLabel userName = new JLabel("Username: " + WelcomeFrame.username.getText());
-        userName.setBounds(WIDTH/4 - 75, 10, 150, 25);
+        userName.setBounds(WIDTH / 4 - 75, 10, 150, 25);
         loginInfoPanel.add(userName);
 
         JButton name = new JButton(db.findUser(WelcomeFrame.username.getText()).get("name").toString());
-        name.setBounds(WIDTH/2 - 75, 10, 150, 25);
+        name.setBounds(WIDTH / 2 - 75, 10, 150, 25);
         loginInfoPanel.add(name);
 
         if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isAdmin")) {
@@ -71,10 +83,82 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         custTier.setBounds(750 - 75, 10, 150, 25);
         loginInfoPanel.add(custTier);
 
+        loginInfoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
         this.getContentPane().add(loginInfoPanel);
+
+        FindIterable<Document> docs = db.getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        Iterator<Document> it = docs.iterator();
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(maxTutors, 1));
+        //panel.setMaximumSize(new Dimension(100, 100 * people.length));
+
+        JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        while (it.hasNext()) {
+            Document doc = it.next();
+            JButton tutorButton = new JButton(doc.getString("name"));
+            tutorButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
+            panel.add(tutorButton);
+            tutors.add(db.findUser(doc.getString("username")));
+            tutorButtons.add(tutorButton);
+        }
+
+        for (int i = 0; i < tutorButtons.size(); i++) {
+            Document tutorData = db.findUserByName(tutorButtons.get(i).getText());
+            tutorButtons.get(i).addActionListener(e -> {
+                System.out.println(tutorData.getString("name"));
+
+                JPanel tutorPanel = new JPanel();
+                tutorPanel.setLayout(null);
+                tutorPanel.setBounds(333, 45, myFrame.getWidth() - 333, 370);
+
+                JLabel label = new JLabel(tutorData.getString("username"));
+                label.setBounds(333, 45, 150, 25);
+                tutorPanel.add(label);
+
+                tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+                myFrame.getContentPane().add(tutorPanel);
+                tutorPanel.revalidate();
+                tutorPanel.repaint();
+            });
+        }
+
+        //System.out.println(tutors);
+
+        panel.setPreferredSize(new Dimension(333, 12000));
+
+        pane.setBounds(0, 45, 333, 370);
+
+        pane.setViewportView(panel);
+
+        this.getContentPane().add(pane);
 
         this.setVisible(true);
 
+    }
+
+    private JPanel createTutorPage(String tutorUsername, int x, int y, int w, int h, Container c) {
+        if (!db.checkIfUserExists(tutorUsername)) {
+            return null;
+        }
+
+        Document tutorData = db.findUser(tutorUsername);
+
+        JPanel tutorPanel = new JPanel();
+        tutorPanel.setBounds(x, y, w, h);
+        tutorPanel.setLayout(new BoxLayout(tutorPanel, BoxLayout.PAGE_AXIS));
+
+        JLabel name = new JLabel(tutorData.getString("name"));
+        name.setBounds(0, 0, 150, 25);
+        tutorPanel.add(name);
+
+        //System.out.println(name);
+
+        tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+        return tutorPanel;
     }
 
     public class WelcomeFrame extends JFrame implements ActionListener {

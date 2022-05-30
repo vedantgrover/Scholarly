@@ -146,7 +146,8 @@ public class Customer {
     csvWriter(userID, organization, userName, userPassword, isAdmin, subjects);
 }
 
-    public void csvWriter(int userID, String organization, String userName, String password, boolean Admin, String Subjects){
+    public void csvWriter(int userID, String organization, String userName,
+                          String password, boolean Admin, String Subjects){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("AllRegisteredUsers.csv"));
             writer.write(userID+","+organization+","+userName+","+password+","+Admin+","+Subjects+"\n");
