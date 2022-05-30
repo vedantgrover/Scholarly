@@ -5,7 +5,7 @@ public class Runner {
   public static void main(String[] args) {
     System.out.println("Hello World!");
 
-    new ScholarlyFrame();
+    ScholarlyFrame f = new ScholarlyFrame();
     
         /**
          * TODO:

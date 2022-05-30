@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ButtonScrollPaneTest extends JFrame {
-    public String[] people = new String[300];
+    public String[] people = new String[100];
     public ButtonScrollPaneTest() {
         int rows = 200;
         for (int i = 0; i < people.length; i++) {
