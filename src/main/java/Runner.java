@@ -32,17 +32,17 @@ public class Runner {
          * be able to finish this in time. At least fot he soft launch.
          * 
          * Agenda:
-         *  - ✅ Set up MongoDB
-         *  - ✅ Set up Registration and Login (WITH GUI)
-         *  - Create Scroll Panel with all the Tutors
-         *  - Create Tutor sign up
-         *  - Create description box
-         *  - Create command box
+         *  - ✅ Set up MongoDB (@vedantgrover)
+         *  - ✅ Set up Registration and Login (WITH GUI) (@vedantgrover)
+         *  - ✅ Create Scroll Panel with all the Tutors (@vedantgrover)
+         *  - Create Tutor sign up (@Jericoz-JC)
+         *  - Create description box (@Jericoz-JC & @vedantgrover)
+         *  - ❌ Create command box (Hold off on this for now.)
          * Soft Launch Happens
-         *  - Make the Wix Site for downloading and collecting payment for software (lifetime for now. will change to monthly once we figure out how)
-         *  - Create the Discord Server.
-         *  - Create the Discord Bot for server moderation.
-         * Final Presentation (if we get investors)
+         *  - Make the Wix Site for downloading and collecting payment for software (lifetime for now. will change to monthly once we figure out how) (@AshGampa)
+         *  - Create the Discord Server. (@vedantgrover & @AshGampa & @Jericoz-JC)
+         *  - Create the Discord Bot for server moderation. (@vedantgrover and anyone else who wants to try it out and learn)
+         * Final Presentation (if we get investors) (@vedantgrover & @AshGampa & @Jericoz-JC)
          *  - **We choose if we want to continue this project and see if it goes anywhere**.
          */
 
