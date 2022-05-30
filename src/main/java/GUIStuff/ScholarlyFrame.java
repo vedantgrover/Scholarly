@@ -2,11 +2,13 @@ package GUIStuff;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.print.Doc;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -33,7 +35,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     //private URL iconURL = getClass().getResource("logo.png");
     //private ImageIcon icon = new ImageIcon(iconURL);
 
+    BufferedImage image;
+
     public ScholarlyFrame() {
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/GUIStuff/logo.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         myFrame = this;
         //this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,7 +184,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         public WelcomeFrame() {
             this.setTitle("Scholarly Connect");
-            //this.setIconImage(icon.getImage());
+            this.setIconImage(image);
             this.setResizable(false);
             this.setSize(WIDTH, HEIGHT);
             this.setLocationRelativeTo(null);
@@ -240,7 +249,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setSize(new Dimension(400, 200));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
-            //frame.setIconImage(icon.getImage());
+            frame.setIconImage(image);
 
             label = new JLabel("Username");
             label.setBounds(100, 8, 70, 20);
@@ -300,7 +309,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             frame.setSize(new Dimension(400, 300));
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setResizable(false);
-            //frame.setIconImage(icon.getImage());
+            frame.setIconImage(image);
 
             firstNameLabel = new JLabel("First Name");
             firstNameLabel.setBounds(100, 8, 70, 20);
