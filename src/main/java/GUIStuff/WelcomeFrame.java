@@ -223,11 +223,6 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         back.setFocusable(false);
         basicPanel.add(back);
 
-        JPanel communicationPanel = new JPanel();
-        communicationPanel.setLayout(null);
-
-
-
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
 

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -19,7 +21,7 @@ public class MongoDBTest {
     public static MongoDatabase database; // The thingiemabobber that stores the Collections of Documents.
     public static MongoCollection<Document> testDocs; // The thing that stores the documents. (Collection)
     public static void main(String[] args) {
-        //mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
+        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
         database = mongoClient.getDatabase("VAC"); // Grabbing all the data from the database and making it interactable with the code.
         testDocs = database.getCollection("userData"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
 
@@ -52,8 +54,16 @@ public class MongoDBTest {
             System.out.println(it.next());
         }
 
+        List<Document> tutors = new ArrayList<Document>();
+        //tutors.add(new Document("tutorName", "Example Name").append("TutorDescription", "I am the Tutor Description"));
+
+        Document doc = new Document("TutorRequests", tutors);
+        testDocs.insertOne(doc);
+
+        //System.out.println(doc);
+
         query = new Document();
-        testDocs.deleteMany(query);
+        //testDocs.deleteMany(query);
 
         
     }

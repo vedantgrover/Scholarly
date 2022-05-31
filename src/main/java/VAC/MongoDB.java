@@ -1,5 +1,7 @@
 package VAC;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import com.mongodb.MongoClient;
@@ -52,12 +54,13 @@ public class MongoDB {
             return false;
         }
 
-        if (data.countDocuments(new Document("org", org)) == 0) {
-            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false));
+        if (data.countDocuments(new Document("organization", org)) == 0) {
+            List<Document> tutorRequests = new ArrayList<Document>();
+            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false).append("TutorRequests", tutorRequests));
             return true;
         }
 
-        data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("organization", org).append("username", username).append("password", password).append("isAdmin", false).append("isTutor", false));
+        data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", false).append("isTutor", false));
         return true;
     }
 
@@ -71,5 +74,19 @@ public class MongoDB {
     public Document createTutorRequest(String tutorUsername, String description) {
         return new Document("tutorUsername", tutorUsername).append("description", description);
     }
+
+    public boolean switchToAdmin(String username) {
+        if (!checkIfUserExists(username)) {
+            return false;
+        }
+
+        List<Document> tutorData = new ArrayList<Document>();
+        Document currentData = findUser(username).append("TutorRequests", tutorData);
+        data.updateOne(new Document("username", username), currentData);
+
+        return true;
+    }
+
+    
     
 }
