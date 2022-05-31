@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.DimensionUIResource;
 
 import VAC.MongoDB;
 import VAC.Scholarly;
@@ -41,8 +42,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setIconImage(image);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
-        this.setSize(WIDTH, HEIGHT);
-        this.setLocationRelativeTo(null);
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setFocusable(true);
         this.setResizable(false);
         this.setLayout(null);
@@ -130,11 +130,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.getContentPane().add(pane);
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
-            JButton button = new JButton("Tutor Requests ()");
-            button.setBounds(333, 405, 666, 333);
+            JButton button = new JButton("Tutor Requests ( n )");
+            button.setBounds(333, 415, 660, 150);
             this.getContentPane().add(button);
         }
 
+        this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
 
     }
