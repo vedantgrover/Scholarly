@@ -399,6 +399,10 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         }
 
+        public void setTututor(){
+            JButton tutorButton = new JButton();
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
