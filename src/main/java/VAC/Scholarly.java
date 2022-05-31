@@ -2,9 +2,6 @@ package VAC;
 
 import org.bson.Document;
 
-import GUIStuff.ScholarlyFrame;
-import GUIStuff.ScholarlyFrame.WelcomeFrame;
-
 public class Scholarly {
 
     private static MongoDB db = new MongoDB();
