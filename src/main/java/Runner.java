@@ -35,8 +35,10 @@ public class Runner {
          *  - ✅ Set up MongoDB (@vedantgrover)
          *  - ✅ Set up Registration and Login (WITH GUI) (@vedantgrover)
          *  - ✅ Create Scroll Panel with all the Tutors (@vedantgrover)
+         *  - Updating JPanel with user data (@vedantgrover)
          *  - Create Tutor sign up (@Jericoz-JC)
-         *  - Create description box (@Jericoz-JC & @vedantgrover)
+         *  - Create description box (@Jericoz-JC)
+         *  - Create Review Applications button (@vedantgrover)
          *  - ❌ Create command box (Hold off on this for now.)
          * Soft Launch Happens
          *  - Make the Wix Site for downloading and collecting payment for software (lifetime for now. will change to monthly once we figure out how) (@AshGampa)

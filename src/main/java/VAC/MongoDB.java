@@ -22,7 +22,7 @@ import javax.print.Doc;
 public class MongoDB {
     private static MongoClient mongoClient;
     private static MongoDatabase database;
-    private static MongoCollection<Document> data;
+    public static MongoCollection<Document> data;
 
     public MongoDB() {
         mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
@@ -46,14 +46,14 @@ public class MongoDB {
         return data.find(new Document("name", name)).first();
     }
 
-    public boolean createUser(String firstName, String lastName, String email, String org, String username, String password) {
+    public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org, String username, String password) {
         boolean isAdmin = false;
         if (checkIfUserExists(username)) {
             return false;
         }
 
         if (data.countDocuments(new Document("org", org)) == 0) {
-            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false));
+            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false));
             return true;
         }
 
@@ -66,6 +66,10 @@ public class MongoDB {
         FindIterable<Document> docs = data.find(query);
 
         return docs;
+    }
+
+    public Document createTutorRequest(String tutorUsername, String description) {
+        return new Document("tutorUsername", tutorUsername).append("description", description);
     }
     
 }
