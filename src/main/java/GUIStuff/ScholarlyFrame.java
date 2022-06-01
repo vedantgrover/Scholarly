@@ -31,12 +31,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private static final ArrayList<Document> tutors = new ArrayList<Document>();
     private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
 
-    private static JButton applyTutorButton = new JButton();
+    private static JButton applyTutorButton;
 
     protected static BufferedImage image;
 
     public ScholarlyFrame() {
-        db.switchToAdmin("CJobi");
+        // db.switchToAdmin("CJobi");
+        applyTutorButton = new JButton();
         myFrame = this;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
@@ -85,23 +86,24 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         this.getContentPane().add(loginInfoPanel);
 
-        FindIterable<Document> docs = db.getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        FindIterable<Document> docs = db
+                .getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
         Iterator<Document> it = docs.iterator();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(maxTutors, 1));
-        //panel.setMaximumSize(new Dimension(100, 100 * people.length));
+        // panel.setMaximumSize(new Dimension(100, 100 * people.length));
 
-        JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         while (it.hasNext()) {
             Document doc = it.next();
             JButton tutorButton = new JButton(doc.getString("name"));
             tutorButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
             tutorButton.addActionListener(e -> {
-                //System.out.println(doc.getString("name"));
+                // System.out.println(doc.getString("name"));
 
-                
                 tutorPanel.setLayout(null);
                 tutorPanel.setBounds(333, 45, myFrame.getWidth() - 333, 370);
 
@@ -126,24 +128,32 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         pane.setViewportView(panel);
 
         this.getContentPane().add(pane);
+
+        JButton applyButton = new JButton("Apply");
+        applyButton.setBounds(0, 415, pane.getWidth(), 150);
+        applyButton.addActionListener(e -> new TutorApply());
+        this.getContentPane().add(applyButton);
+
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
-            JButton button = new JButton("Tutor Requests ( " + data.getList("TutorRequests", List.class).size() + " )");
+            JButton button = new JButton(
+                    "Tutor Requests ( " + data.getList("TutorRequests", Document.class).size() + " )");
             button.setBounds(333, 415, 660, 150);
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
         }
 
-        if (data.getBoolean("isAdmin")==false && data.getBoolean("isTutor")==false) {
-            
-            applyTutorButton.setBounds(100,800, 250, 100);
-            applyTutorButton.addActionListener(this);
-            applyTutorButton.setText("Become a tutor");
-            applyTutorButton.setFocusable(false);
-            //Cannot find the correct pannel to add to yet
-            //Removed your tutor pannel and made it a global pannel
-            tutorPanel.add(applyTutorButton);
-        }
+        // if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
+
+        // applyTutorButton.setBounds(0, this.getHeight() * 2 / 3, pane.getWidth(), 150);
+        // applyTutorButton.addActionListener(this);
+        // applyTutorButton.setText("Become a tutor");
+        // applyTutorButton.setFocusable(false);
+        // Cannot find the correct pannel to add to yet
+        // Removed your tutor pannel and made it a global pannel
+        // tutorPanel.add(applyTutorButton);
+        //this.getContentPane().add(applyTutorButton);
+        // }
 
         this.pack();
         this.setLocationRelativeTo(null);
@@ -153,7 +163,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==applyTutorButton) {
+        if (e.getSource() == applyTutorButton) {
             TutorApply newTutor = new TutorApply();
         }
     }
