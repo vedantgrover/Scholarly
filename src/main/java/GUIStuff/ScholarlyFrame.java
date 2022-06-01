@@ -168,3 +168,4 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         }
     }
 }
+
