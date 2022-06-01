@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 
 import VAC.MongoDB;
 import VAC.Scholarly;
@@ -30,9 +29,10 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private static final ArrayList<Document> tutors = new ArrayList<Document>();
     private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
 
-    BufferedImage image;
+    protected static BufferedImage image;
 
     public ScholarlyFrame() {
+        db.switchToAdmin("CJobi");
         myFrame = this;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
@@ -94,21 +94,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             Document doc = it.next();
             JButton tutorButton = new JButton(doc.getString("name"));
             tutorButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
-            panel.add(tutorButton);
-            tutors.add(db.findUser(doc.getString("username")));
-            tutorButtons.add(tutorButton);
-        }
-
-        for (JButton tutorButton : tutorButtons) {
-            Document tutorData = db.findUserByName(tutorButton.getText());
             tutorButton.addActionListener(e -> {
-                System.out.println(tutorData.getString("name"));
+                //System.out.println(doc.getString("name"));
 
                 JPanel tutorPanel = new JPanel();
                 tutorPanel.setLayout(null);
                 tutorPanel.setBounds(333, 45, myFrame.getWidth() - 333, 370);
 
-                JLabel label = new JLabel(tutorData.getString("username"));
+                JLabel label = new JLabel(doc.getString("username"));
                 label.setBounds(333, 45, 150, 25);
                 tutorPanel.add(label);
 
@@ -117,9 +110,10 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 tutorPanel.revalidate();
                 tutorPanel.repaint();
             });
+            panel.add(tutorButton);
+            tutors.add(db.findUser(doc.getString("username")));
+            tutorButtons.add(tutorButton);
         }
-
-        //System.out.println(tutors);
 
         panel.setPreferredSize(new Dimension(333, 12000));
 
@@ -132,6 +126,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         if (data.getBoolean("isAdmin")) {
             JButton button = new JButton("Tutor Requests ( " + data.getList("TutorRequests", List.class).size() + " )");
             button.setBounds(333, 415, 660, 150);
+            button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
         }
 

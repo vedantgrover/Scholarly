@@ -6,14 +6,21 @@ import java.util.UUID;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
+
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import javax.print.Doc;
+import javax.xml.transform.sax.TemplatesHandler;
 
 /**
  * The Code that I wrote within this class is a bit of an example on what we COULD do when we register users into the DB. 
@@ -71,8 +78,8 @@ public class MongoDB {
         return docs;
     }
 
-    public Document createTutorRequest(String tutorUsername, String description) {
-        return new Document("tutorUsername", tutorUsername).append("description", description);
+    public Document createTutorRequest(String tutorUsername, String tutorName, String description) {
+        return new Document("tutorUsername", tutorUsername).append("name", tutorName).append("description", description);
     }
 
     public boolean switchToAdmin(String username) {
@@ -81,8 +88,42 @@ public class MongoDB {
         }
 
         List<Document> tutorData = new ArrayList<Document>();
-        Document currentData = findUser(username).append("TutorRequests", tutorData);
-        data.updateOne(new Document("username", username), currentData);
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.combine(
+            Updates.set("isAdmin", true),
+            Updates.addToSet("TutorRequests", tutorData)
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean makeTutor(String username) {
+        if (!checkIfUserExists(username)) {
+            return false;
+        }
+
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.set("isTutor", true);
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+            return false;
+        }
 
         return true;
     }
