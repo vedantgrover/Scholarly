@@ -1,4 +1,5 @@
 package VAC;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,8 +24,10 @@ import javax.print.Doc;
 import javax.xml.transform.sax.TemplatesHandler;
 
 /**
- * The Code that I wrote within this class is a bit of an example on what we COULD do when we register users into the DB. 
- * Obvisously we will get all the data with user input. But this will be how it gets registered into the database. We'll make it work. 
+ * The Code that I wrote within this class is a bit of an example on what we
+ * COULD do when we register users into the DB.
+ * Obvisously we will get all the data with user input. But this will be how it
+ * gets registered into the database. We'll make it work.
  * This what I have learnt so far. I will be learning more later.
  */
 
@@ -34,11 +37,12 @@ public class MongoDB {
     public static MongoCollection<Document> data;
 
     public MongoDB() {
-        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
+        mongoClient = new MongoClient(new MongoClientURI(
+                "mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
         database = mongoClient.getDatabase("VAC");
         data = database.getCollection("userData");
 
-        //data.deleteMany(new Document());
+        // data.deleteMany(new Document());
     }
 
     public boolean checkIfUserExists(String username) {
@@ -55,19 +59,27 @@ public class MongoDB {
         return data.find(new Document("name", name)).first();
     }
 
-    public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org, String username, String password) {
+    public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org,
+            String username, String password) {
         boolean isAdmin = false;
         if (checkIfUserExists(username)) {
             return false;
         }
 
         if (data.countDocuments(new Document("organization", org)) == 0) {
-            List<Document> tutorRequests = new ArrayList<Document>();
-            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", true).append("isTutor", false).append("TutorRequests", tutorRequests));
+
+            data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName)
+                    .append("email", email).append("number", phoneNumber).append("organization", org)
+                    .append("username", username).append("password", password).append("isAdmin", true)
+                    .append("isTutor", false).append("pending", false));
             return true;
         }
 
-        data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email).append("number", phoneNumber).append("organization", org).append("username", username).append("password", password).append("isAdmin", false).append("isTutor", false));
+        data.insertOne(
+                new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email)
+                        .append("number", phoneNumber).append("organization", org).append("username", username)
+                        .append("password", password).append("isAdmin", false).append("isTutor", false)
+                        .append("pending", false));
         return true;
     }
 
@@ -78,21 +90,23 @@ public class MongoDB {
         return docs;
     }
 
-    public Document createTutorRequest(String tutorUsername, String tutorName, String description) {
-        return new Document("tutorUsername", tutorUsername).append("name", tutorName).append("description", description);
+    public FindIterable<Document> getTutorRequests(String org) {
+        Document query = new Document("organization", org).append("pending", true);
+        FindIterable<Document> docs = data.find(query);
+
+        return docs;
     }
 
-    public boolean switchToAdmin(String username) {
+    public void makeTutorRequest(String username, String description) {
         if (!checkIfUserExists(username)) {
-            return false;
+            return;
         }
 
-        List<Document> tutorData = new ArrayList<Document>();
         Document query = new Document("username", username);
 
         Bson updates = Updates.combine(
-            Updates.set("isAdmin", true),
-            Updates.addToSet("TutorRequests", tutorData)
+            Updates.set("pending", true),
+            Updates.addToSet("description", description)
         );
 
         UpdateOptions options = new UpdateOptions().upsert(true);
@@ -101,33 +115,34 @@ public class MongoDB {
             UpdateResult result = data.updateOne(query, updates, options);
         } catch (MongoException me) {
             System.err.println("Unable to update due to an error: " + me);
-            return false;
         }
-
-        return true;
     }
 
-    public boolean makeTutor(String username) {
-        if (!checkIfUserExists(username)) {
-            return false;
-        }
-
+    public void recruit(String username, boolean approve) {
         Document query = new Document("username", username);
+        if (approve) {
+            Bson updates = Updates.combine(
+                Updates.set("pending", false),
+                Updates.set("isTutor", true)
+            );
 
-        Bson updates = Updates.set("isTutor", true);
+            UpdateOptions options = new UpdateOptions().upsert(true);
 
-        UpdateOptions options = new UpdateOptions().upsert(true);
+            try {
+                UpdateResult result = data.updateOne(query, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
+        } else {
+            Bson updates = Updates.set("pending", false);
 
-        try {
-            UpdateResult result = data.updateOne(query, updates, options);
-        } catch (MongoException me) {
-            System.err.println("Unable to update due to an error: " + me);
-            return false;
+            UpdateOptions options = new UpdateOptions().upsert(true);
+
+            try {
+                UpdateResult result = data.updateOne(query, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
         }
-
-        return true;
     }
-
-    
-    
 }
