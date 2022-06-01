@@ -24,10 +24,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     private static JFrame myFrame;
 
+    private static JPanel tutorPanel = new JPanel();
+
     private static final int maxTutors = 200;
 
     private static final ArrayList<Document> tutors = new ArrayList<Document>();
     private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
+
+    private static JButton applyTutorButton = new JButton();
 
     protected static BufferedImage image;
 
@@ -97,7 +101,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorButton.addActionListener(e -> {
                 //System.out.println(doc.getString("name"));
 
-                JPanel tutorPanel = new JPanel();
+                
                 tutorPanel.setLayout(null);
                 tutorPanel.setBounds(333, 45, myFrame.getWidth() - 333, 370);
 
@@ -130,6 +134,17 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.getContentPane().add(button);
         }
 
+        if (data.getBoolean("isAdmin")==false && data.getBoolean("isTutor")==false) {
+            
+            applyTutorButton.setBounds(100,800, 250, 100);
+            applyTutorButton.addActionListener(this);
+            applyTutorButton.setText("Become a tutor");
+            applyTutorButton.setFocusable(false);
+            //Cannot find the correct pannel to add to yet
+            //Removed your tutor pannel and made it a global pannel
+            tutorPanel.add(applyTutorButton);
+        }
+
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -138,6 +153,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource()==applyTutorButton) {
+            TutorApply newTutor = new TutorApply();
+        }
     }
 }
