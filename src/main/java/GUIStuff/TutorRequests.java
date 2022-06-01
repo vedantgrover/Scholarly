@@ -1,5 +1,6 @@
 package GUIStuff;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -7,11 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.mongodb.MongoException;
-import com.mongodb.bulk.UpdateRequest;
-import com.mongodb.client.model.UpdateOneModel;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -21,11 +20,16 @@ import VAC.MongoDB;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 public class TutorRequests extends JFrame implements ActionListener {
 
-    private static MongoDB db = new MongoDB();
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 400;
+
+    private static MongoDB db = ScholarlyFrame.db;
+
+    private static JPanel descriptionPanel = new JPanel();
 
     private static ArrayList<JButton> tutorRButtons = new ArrayList<JButton>();
     private static ArrayList<Document> tutorRData = new ArrayList<Document>();
@@ -38,87 +42,65 @@ public class TutorRequests extends JFrame implements ActionListener {
 
         JFrame myFrame = this;
         this.setTitle("Tutor Requests");
-        this.setIconImage(ScholarlyFrame.image);
-        this.setLayout(null);
-        this.setPreferredSize(new Dimension(500, 300));
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setIconImage(ScholarlyFrame.image);
+        this.setFocusable(true);
+        this.setLayout(null);
 
-        List<Document> tutorR = db.findUser(WelcomeFrame.username.getText()).getList("TutorRequests", Document.class);
-        JPanel tutorRPanel = new JPanel();
-        tutorRPanel.setLayout(new GridLayout(10, 1));
+        FindIterable<Document> docs = db
+                .getTutorRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        Iterator<Document> it = docs.iterator();
 
-        JScrollPane tutorRScroll = new JScrollPane(tutorRPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
-        for (Document doc : tutorR) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(200, 1));
+
+        JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        while (it.hasNext()) {
+            Document doc = it.next();
             JButton tutorRButton = new JButton(doc.getString("name"));
-            tutorRButton.setPreferredSize(new Dimension(tutorRScroll.getWidth(), 100));
+            tutorRButton.setBounds(0, 0, pane.getWidth(), 100);
+            //tutorRButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
             tutorRButton.addActionListener(e -> {
+                // System.out.println(doc.getString("name"));
 
-                JPanel tutorRDescription = new JPanel();
-                tutorRDescription.setLayout(null);
-                tutorRDescription.setBounds(myFrame.getWidth() * 1/3, 0, myFrame.getWidth() * 2/3, myFrame.getHeight());
+                descriptionPanel.setLayout(null);
+                descriptionPanel.setBounds(WIDTH/3, 0, (WIDTH/3) * 2, HEIGHT - 20);
 
-                JLabel description = new JLabel(doc.getString("description"));
-                description.setBounds(myFrame.getWidth() * 1/3, 0, myFrame.getWidth() * 2/3, myFrame.getHeight());
-                tutorRDescription.add(description);
-
-                approveButton.setBounds((tutorRDescription.getWidth() * 1/3) - approveButton.getWidth()/2, 75, 100, 50);
-                approveButton.addActionListener(event -> recruit(doc.getString("username"), true));
-
-                declineButton.setBounds((tutorRDescription.getWidth() * 2/3) - declineButton.getWidth()/2, 75, 100, 50);
-                declineButton.addActionListener(event -> recruit(doc.getString("username"), false));
-
-                myFrame.getContentPane().add(tutorRDescription);
-                revalidate();
-                repaint();
+                JLabel tutorRLabel = new JLabel(doc.getString("username"));
+                tutorRLabel.setBounds(10, 10, 150, 25);
+                
+                descriptionPanel.add(tutorRLabel);
+                descriptionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+                myFrame.getContentPane().add(descriptionPanel, BorderLayout.CENTER);
+                descriptionPanel.revalidate();
+                descriptionPanel.repaint();
             });
-            tutorRPanel.add(tutorRButton);
+            panel.add(tutorRButton);
+            tutorRData.add(db.findUser(doc.getString("username")));
             tutorRButtons.add(tutorRButton);
-            tutorRData.add(doc);
         }
 
-        tutorRPanel.setPreferredSize(new Dimension(tutorRScroll.getWidth(), 12000));
+        panel.setPreferredSize(new Dimension(WIDTH/3, 12000));
 
-        tutorRScroll.setBounds(0, 0, this.getWidth() * 1/3, this.getHeight());
-        tutorRScroll.setViewportView(tutorRPanel);
+        pane.setBounds(0, 0, WIDTH/3, HEIGHT - 20);
 
-        this.getContentPane().add(tutorRScroll);
+        pane.setViewportView(panel);
+
+        this.getContentPane().add(pane);
 
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    public static boolean recruit(String username, boolean approved) {
-        if (approved) {
-            db.makeTutor(username);
-            removeTutorRequest(username);
-            return true;
-        } else {
-            removeTutorRequest(username);
-            return false;
-        }
-    }
-
-    public static void removeTutorRequest(String username) {
-        Document query = new Document("TutorRequests", new Document("username", username));
-
-        Bson updates = Updates.pull("TutorRequests", new Document("username", username));
-
-        UpdateOptions options = new UpdateOptions().upsert(true);
-
-        try {
-            db.data.updateOne(query, updates, options);
-        } catch (MongoException me) {
-            System.err.println("Unable to update due to an error: " + me);
-        }
-    }
-
     @Override
     public void actionPerformed(ActionEvent arg0) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }

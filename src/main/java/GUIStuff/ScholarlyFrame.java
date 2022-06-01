@@ -137,7 +137,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
             JButton button = new JButton(
-                    "Tutor Requests ( " + data.getList("TutorRequests", Document.class).size() + " )");
+                    "Tutor Requests ( " + db.data.countDocuments(new Document("organization",  db.findUser(WelcomeFrame.username.getText()).getString("organization")).append("pending", true)) + " )");
             button.setBounds(333, 415, 660, 150);
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);

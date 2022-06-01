@@ -27,8 +27,8 @@ public class MongoDBTest {
     public static MongoCollection<Document> testDocs; // The thing that stores the documents. (Collection)
     public static void main(String[] args) {
         mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
-        database = mongoClient.getDatabase("TestData"); // Grabbing all the data from the database and making it interactable with the code.
-        testDocs = database.getCollection("test"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
+        database = mongoClient.getDatabase("VAC"); // Grabbing all the data from the database and making it interactable with the code.
+        testDocs = database.getCollection("userData"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
 
         Person jeff = new Person("jefferyb", "jeffbisrich", "amazonhs", false, false, "Knows computer science and coding. I am Rich."); // A person with all of these. All of this will be stored in the Database
         Person mark = new Person("markz", "markzisrich", "metahs", false, false, "Knows computer science and coding. I am Rich."); // Another rich person. 
