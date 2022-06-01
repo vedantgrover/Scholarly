@@ -68,11 +68,11 @@ public class TutorRequests extends JFrame implements ActionListener {
                 // System.out.println(doc.getString("name"));
 
                 descriptionPanel.setLayout(null);
-                descriptionPanel.setBounds(WIDTH/3, 0, (WIDTH/3) * 2, HEIGHT - 20);
+                descriptionPanel.setBounds(WIDTH/3, 0, 453, HEIGHT - 37);
 
                 JLabel tutorRLabel = new JLabel(doc.getString("username"));
                 tutorRLabel.setBounds(10, 10, 150, 25);
-                
+
                 descriptionPanel.add(tutorRLabel);
                 descriptionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
                 myFrame.getContentPane().add(descriptionPanel, BorderLayout.CENTER);
