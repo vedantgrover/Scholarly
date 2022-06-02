@@ -107,10 +107,18 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 tutorPanel.setLayout(null);
                 tutorPanel.setBounds(333, 45, 652, 370);
 
-                JLabel label = new JLabel(doc.getString("username"));
-                label.setBounds(10, 45, 150, 25);
-                tutorPanel.add(label);
+                // JLabel label = new JLabel(doc.getString("username"));
+                // label.setBounds(10, 45, 150, 25);
+                // tutorPanel.add(label);
 
+                String tutorInfo = "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
+                        + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
+                JTextArea tutorIDisplay = new JTextArea(tutorInfo);
+                tutorIDisplay.setBounds(10, 45, 642, 370);
+                tutorIDisplay.setLineWrap(true);
+                tutorIDisplay.setWrapStyleWord(true);
+                tutorIDisplay.setOpaque(false);
+                tutorPanel.add(tutorIDisplay);
                 // Create Request Button for Tutors
 
                 tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
@@ -139,7 +147,9 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
             JButton button = new JButton(
-                    "Tutor Requests ( " + db.data.countDocuments(new Document("organization",  db.findUser(WelcomeFrame.username.getText()).getString("organization")).append("pending", true)) + " )");
+                    "Tutor Requests ( " + db.data.countDocuments(new Document("organization",
+                            db.findUser(WelcomeFrame.username.getText()).getString("organization"))
+                            .append("pending", true)) + " )");
             button.setBounds(333, 415, 660, 150);
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
@@ -147,14 +157,15 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         // if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
 
-        // applyTutorButton.setBounds(0, this.getHeight() * 2 / 3, pane.getWidth(), 150);
+        // applyTutorButton.setBounds(0, this.getHeight() * 2 / 3, pane.getWidth(),
+        // 150);
         // applyTutorButton.addActionListener(this);
         // applyTutorButton.setText("Become a tutor");
         // applyTutorButton.setFocusable(false);
         // Cannot find the correct pannel to add to yet
         // Removed your tutor pannel and made it a global pannel
         // tutorPanel.add(applyTutorButton);
-        //this.getContentPane().add(applyTutorButton);
+        // this.getContentPane().add(applyTutorButton);
         // }
 
         this.pack();
@@ -170,4 +181,3 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         }
     }
 }
-
