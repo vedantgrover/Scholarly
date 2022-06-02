@@ -32,7 +32,7 @@ public class Runner {
          * be able to finish this in time. At least fot he soft launch.
          * 
          * Agenda:
-         *  - ✅ Set up MongoDB (@vedantgrover)
+         *  - ✅ Set up MongoDB (@vedantgrover)r  
          *  - ✅ Set up Registration and Login (WITH GUI) (@vedantgrover)
          *  - ✅ Create Scroll Panel with all the Tutors (@vedantgrover)
          *  - ✅ Updating JPanel with user data (@vedantgrover)
