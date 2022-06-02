@@ -1,27 +1,18 @@
 package VAC;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
-
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import javax.print.Doc;
-import javax.xml.transform.sax.TemplatesHandler;
+import java.util.UUID;
 
 /**
  * The Code that I wrote within this class is a bit of an example on what we
@@ -60,7 +51,7 @@ public class MongoDB {
     }
 
     public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org,
-            String username, String password) {
+                              String username, String password) {
         boolean isAdmin = false;
         if (checkIfUserExists(username)) {
             return false;
@@ -105,8 +96,8 @@ public class MongoDB {
         Document query = new Document("username", username);
 
         Bson updates = Updates.combine(
-            Updates.set("pending", true),
-            Updates.set("description", description)
+                Updates.set("pending", true),
+                Updates.set("description", description)
         );
 
         UpdateOptions options = new UpdateOptions().upsert(true);
@@ -122,8 +113,8 @@ public class MongoDB {
         Document query = new Document("username", username);
         if (approve) {
             Bson updates = Updates.combine(
-                Updates.set("pending", false),
-                Updates.set("isTutor", true)
+                    Updates.set("pending", false),
+                    Updates.set("isTutor", true)
             );
 
             UpdateOptions options = new UpdateOptions().upsert(true);

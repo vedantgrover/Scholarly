@@ -1,26 +1,13 @@
 package GUIStuff;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
-import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-
-import org.bson.Document;
-import org.bson.conversions.Bson;
-
 import VAC.MongoDB;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -36,7 +23,7 @@ public class TutorRequests extends JFrame implements ActionListener {
     private static ArrayList<JButton> tutorRButtons = new ArrayList<JButton>();
     private static ArrayList<Document> tutorRData = new ArrayList<Document>();
 
-    private static JButton approveButton, declineButton;
+    protected static JButton approveButton, declineButton;
 
     public TutorRequests() {
         approveButton = new JButton("Approve");
@@ -69,8 +56,10 @@ public class TutorRequests extends JFrame implements ActionListener {
             tutorRButton.addActionListener(e -> {
                 // System.out.println(doc.getString("name"));
 
+                descriptionPanel.removeAll();
+
                 descriptionPanel.setLayout(null);
-                descriptionPanel.setBounds(WIDTH/3, 0, 453, HEIGHT - 37);
+                descriptionPanel.setBounds(WIDTH / 3, 0, 453, HEIGHT - 37);
 
                 // JLabel tutorRLabel = new JLabel(doc.getString("description"));
                 // tutorRLabel.setBounds(10, 10, 453, HEIGHT);
@@ -82,15 +71,32 @@ public class TutorRequests extends JFrame implements ActionListener {
                 tutorRText.setLineWrap(true);
                 tutorRText.setWrapStyleWord(true);
 
-                approveButton.setBounds(descriptionPanel.getWidth()/2 - 5, 307, descriptionPanel.getWidth()/2, 50);
+                approveButton.setBounds(descriptionPanel.getWidth() / 2 - 5, 307, descriptionPanel.getWidth() / 2, 50);
                 approveButton.addActionListener(event -> {
                     db.recruit(doc.getString("username"), true);
+                    ScholarlyFrame.createNewTutorButton(doc);
+                    ScholarlyFrame.panel.revalidate();
+                    ScholarlyFrame.panel.repaint();
+                    panel.remove(tutorRButton);
+                    panel.revalidate();
+                    panel.repaint();
+                    descriptionPanel.removeAll();
+                    descriptionPanel.revalidate();
+                    descriptionPanel.repaint();
+                    JOptionPane.showMessageDialog(myFrame, "Approved!");
                 });
                 descriptionPanel.add(approveButton);
 
-                declineButton.setBounds(5, 307, descriptionPanel.getWidth()/2, 50);
+                declineButton.setBounds(5, 307, descriptionPanel.getWidth() / 2, 50);
                 declineButton.addActionListener(event -> {
                     db.recruit(doc.getString("username"), false);
+                    panel.remove(tutorRButton);
+                    panel.revalidate();
+                    panel.repaint();
+                    myFrame.remove(descriptionPanel);
+                    myFrame.revalidate();
+                    myFrame.repaint();
+                    JOptionPane.showMessageDialog(myFrame, "Declined!");
                 });
                 descriptionPanel.add(declineButton);
 
@@ -105,9 +111,9 @@ public class TutorRequests extends JFrame implements ActionListener {
             tutorRButtons.add(tutorRButton);
         }
 
-        panel.setPreferredSize(new Dimension(WIDTH/3, 12000));
+        panel.setPreferredSize(new Dimension(WIDTH / 3, 12000));
 
-        pane.setBounds(0, 0, WIDTH/3, HEIGHT - 20);
+        pane.setBounds(0, 0, WIDTH / 3, HEIGHT - 20);
 
         pane.setViewportView(panel);
 
