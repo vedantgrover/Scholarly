@@ -60,7 +60,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JPanel loginInfoPanel = new JPanel();
         loginInfoPanel.setLayout(null);
-        loginInfoPanel.setBounds(0, 0, 985, 45);
+        loginInfoPanel.setBounds(0, 0, 987, 45);
 
         JLabel userName = new JLabel("Username: " + WelcomeFrame.username.getText());
         userName.setBounds(WIDTH / 4 - 75, 10, 150, 25);
@@ -105,11 +105,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 // System.out.println(doc.getString("name"));
 
                 tutorPanel.setLayout(null);
-                tutorPanel.setBounds(333, 45, myFrame.getWidth() - 333, 370);
+                tutorPanel.setBounds(333, 45, 652, 370);
 
                 JLabel label = new JLabel(doc.getString("username"));
                 label.setBounds(333, 45, 150, 25);
                 tutorPanel.add(label);
+
+                // Create Request Button for Tutors
 
                 tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
                 myFrame.getContentPane().add(tutorPanel);

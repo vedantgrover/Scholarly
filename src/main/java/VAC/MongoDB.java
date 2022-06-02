@@ -71,7 +71,7 @@ public class MongoDB {
             data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName)
                     .append("email", email).append("number", phoneNumber).append("organization", org)
                     .append("username", username).append("password", password).append("isAdmin", true)
-                    .append("isTutor", false).append("pending", false));
+                    .append("isTutor", false).append("pending", false).append("description", ""));
             return true;
         }
 
@@ -79,7 +79,7 @@ public class MongoDB {
                 new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email)
                         .append("number", phoneNumber).append("organization", org).append("username", username)
                         .append("password", password).append("isAdmin", false).append("isTutor", false)
-                        .append("pending", false));
+                        .append("pending", false).append("description", ""));
         return true;
     }
 
@@ -106,7 +106,7 @@ public class MongoDB {
 
         Bson updates = Updates.combine(
             Updates.set("pending", true),
-            Updates.addToSet("description", description)
+            Updates.set("description", description)
         );
 
         UpdateOptions options = new UpdateOptions().upsert(true);
