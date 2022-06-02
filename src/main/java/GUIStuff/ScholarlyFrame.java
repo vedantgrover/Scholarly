@@ -108,7 +108,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 tutorPanel.setBounds(333, 45, 652, 370);
 
                 JLabel label = new JLabel(doc.getString("username"));
-                label.setBounds(333, 45, 150, 25);
+                label.setBounds(10, 45, 150, 25);
                 tutorPanel.add(label);
 
                 // Create Request Button for Tutors
