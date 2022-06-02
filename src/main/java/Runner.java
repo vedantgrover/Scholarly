@@ -35,7 +35,7 @@ public class Runner {
          * - ✅ Create Scroll Panel with all the Tutors (@vedantgrover)
          * - ✅ Updating JPanel with user data (@vedantgrover)
          * - ✅ Create Tutor sign up (@Jericoz-JC)
-         * - Create description box (@Jericoz-JC)
+         * - ✅ Create description box (@Jericoz-JC)
          * - ✅ Create Review Applications button (@vedantgrover)
          * - ❌ Create command box (Hold off on this for now.)
          * Soft Launch Happens
