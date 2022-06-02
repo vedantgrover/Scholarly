@@ -105,7 +105,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             createNewTutorButton(it.next());
         }
 
-        panel.setPreferredSize(new Dimension(333, 12000));
+        panel.setPreferredSize(new Dimension(pane.getWidth(), 12000));
 
         pane.setBounds(0, 45, 333, 370);
 

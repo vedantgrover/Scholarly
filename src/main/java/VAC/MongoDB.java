@@ -46,10 +46,6 @@ public class MongoDB {
         return data.find(new Document("username", username)).first();
     }
 
-    public Document findUserByName(String name) {
-        return data.find(new Document("name", name)).first();
-    }
-
     public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org,
                               String username, String password) {
         boolean isAdmin = false;
@@ -62,7 +58,7 @@ public class MongoDB {
             data.insertOne(new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName)
                     .append("email", email).append("number", phoneNumber).append("organization", org)
                     .append("username", username).append("password", password).append("isAdmin", true)
-                    .append("isTutor", false).append("pending", false).append("description", ""));
+                    .append("isTutor", false).append("status", "none").append("description", ""));
             return true;
         }
 
@@ -70,7 +66,7 @@ public class MongoDB {
                 new Document("ID", UUID.randomUUID()).append("name", firstName + " " + lastName).append("email", email)
                         .append("number", phoneNumber).append("organization", org).append("username", username)
                         .append("password", password).append("isAdmin", false).append("isTutor", false)
-                        .append("pending", false).append("description", ""));
+                        .append("status", "none").append("description", ""));
         return true;
     }
 
@@ -82,7 +78,7 @@ public class MongoDB {
     }
 
     public FindIterable<Document> getTutorRequests(String org) {
-        Document query = new Document("organization", org).append("pending", true);
+        Document query = new Document("organization", org).append("status", "aTutor").append("isAdmin", false).append("isTutor", false);
         FindIterable<Document> docs = data.find(query);
 
         return docs;
@@ -96,7 +92,7 @@ public class MongoDB {
         Document query = new Document("username", username);
 
         Bson updates = Updates.combine(
-                Updates.set("pending", true),
+                Updates.set("status", "aTutor"),
                 Updates.set("description", description)
         );
 
@@ -113,7 +109,7 @@ public class MongoDB {
         Document query = new Document("username", username);
         if (approve) {
             Bson updates = Updates.combine(
-                    Updates.set("pending", false),
+                    Updates.set("status", "none"),
                     Updates.set("isTutor", true)
             );
 
@@ -125,7 +121,7 @@ public class MongoDB {
                 System.err.println(me);
             }
         } else {
-            Bson updates = Updates.set("pending", false);
+            Bson updates = Updates.set("status", "none");
 
             UpdateOptions options = new UpdateOptions().upsert(true);
 
