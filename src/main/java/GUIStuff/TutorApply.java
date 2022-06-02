@@ -79,10 +79,10 @@ public class TutorApply implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonLol) {
             String tempVar = textArea.getText();
-            if (tempVar.length()>451) {
-                JOptionPane.showMessageDialog(frame,"Limit to 450 charecters");
+            if (tempVar.length()>2001) {
+                JOptionPane.showMessageDialog(frame,"Limit to 2000 charecters");
             }
-            if (tempVar.length()<450) {
+            if (tempVar.length()<2001) {
                 db.makeTutorRequest(WelcomeFrame.username.getText(), tempVar);
                 frame.dispose();
             }
