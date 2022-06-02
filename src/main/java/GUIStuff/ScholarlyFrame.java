@@ -1,20 +1,20 @@
 package GUIStuff;
 
+import VAC.MongoDB;
+import VAC.Scholarly;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import VAC.MongoDB;
-import VAC.Scholarly;
-import com.mongodb.client.FindIterable;
-import org.bson.Document;
 
 public class ScholarlyFrame extends JFrame implements ActionListener {
 
