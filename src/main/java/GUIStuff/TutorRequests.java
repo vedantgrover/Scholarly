@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
@@ -70,12 +71,19 @@ public class TutorRequests extends JFrame implements ActionListener {
                 descriptionPanel.setLayout(null);
                 descriptionPanel.setBounds(WIDTH/3, 0, 453, HEIGHT - 37);
 
-                JLabel tutorRLabel = new JLabel(doc.getString("description"));
-                tutorRLabel.setBounds(10, 10, 453, HEIGHT - 37);
+                // JLabel tutorRLabel = new JLabel(doc.getString("description"));
+                // tutorRLabel.setBounds(10, 10, 453, HEIGHT);
 
-                descriptionPanel.add(tutorRLabel);
+                JTextArea tutorRText = new JTextArea(doc.getString("description"));
+                tutorRText.setBounds(10, 10, 434, 360);
+                tutorRText.setEditable(false);
+                tutorRText.setOpaque(false);
+                tutorRText.setLineWrap(true);
+                tutorRText.setWrapStyleWord(true);
+
+                descriptionPanel.add(tutorRText);
                 descriptionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-                myFrame.getContentPane().add(descriptionPanel, BorderLayout.CENTER);
+                myFrame.getContentPane().add(descriptionPanel);
                 descriptionPanel.revalidate();
                 descriptionPanel.repaint();
             });
