@@ -22,7 +22,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     protected static final int HEIGHT = 600;
     protected static final MongoDB db = new MongoDB();
 
-    private static JFrame myFrame;
+    protected static JFrame myFrame;
 
     private static JPanel tutorPanel = new JPanel();
 
@@ -117,6 +117,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 tutorIDisplay.setBounds(10, 10, 642, 370);
                 tutorIDisplay.setLineWrap(true);
                 tutorIDisplay.setWrapStyleWord(true);
+                tutorIDisplay.setEditable(false);
                 tutorIDisplay.setOpaque(false);
                 tutorPanel.add(tutorIDisplay);
                 // Create Request Button for Tutors
@@ -172,6 +173,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+    }
+
+    public static void refresh(JFrame frame) {
+        frame.revalidate();
+        frame.repaint();
     }
 
     @Override
