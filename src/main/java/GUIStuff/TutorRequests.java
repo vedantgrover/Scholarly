@@ -75,7 +75,7 @@ public class TutorRequests extends JFrame implements ActionListener {
 
                 descriptionPanel.add(tutorRLabel);
                 descriptionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-                myFrame.getContentPane().add(descriptionPanel, BorderLayout.CENTER);
+                myFrame.getContentPane().add(descriptionPanel);
                 descriptionPanel.revalidate();
                 descriptionPanel.repaint();
             });
