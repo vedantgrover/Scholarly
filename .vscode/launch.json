@@ -1,0 +1,105 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch CardLayoutDropDown",
+            "request": "launch",
+            "mainClass": "CardLayoutDropDown",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch CardLayoutTabs",
+            "request": "launch",
+            "mainClass": "CardLayoutTabs",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch GridLayoutTest",
+            "request": "launch",
+            "mainClass": "GridLayoutTest",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch ImageIconTest",
+            "request": "launch",
+            "mainClass": "ImageIconTest",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch ImagePanelTester",
+            "request": "launch",
+            "mainClass": "ImagePanelTester",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch MongoDBTest",
+            "request": "launch",
+            "mainClass": "MongoDBTest",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch Runner",
+            "request": "launch",
+            "mainClass": "Runner",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch ButtonScrollPaneTest",
+            "request": "launch",
+            "mainClass": "ScrollPaneTestStuff.ButtonScrollPaneTest",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch CreateJScrollPaneExample",
+            "request": "launch",
+            "mainClass": "ScrollPaneTestStuff.CreateJScrollPaneExample",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch MoreScrollPaneTesting",
+            "request": "launch",
+            "mainClass": "ScrollPaneTestStuff.MoreScrollPaneTesting",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch ScrollPaneTest",
+            "request": "launch",
+            "mainClass": "ScrollPaneTestStuff.ScrollPaneTest",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch SwingExample",
+            "request": "launch",
+            "mainClass": "SwingExample",
+            "projectName": "ScholarlyMaven"
+        },
+        {
+            "type": "java",
+            "name": "Launch ThreadTest",
+            "request": "launch",
+            "mainClass": "ThreadTest",
+            "projectName": "ScholarlyMaven"
+        }
+    ]
+}
