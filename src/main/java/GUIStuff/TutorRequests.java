@@ -70,7 +70,7 @@ public class TutorRequests extends JFrame implements ActionListener {
                 descriptionPanel.setLayout(null);
                 descriptionPanel.setBounds(WIDTH/3, 0, 453, HEIGHT - 37);
 
-                JLabel tutorRLabel = new JLabel(doc.getString("username"));
+                JLabel tutorRLabel = new JLabel(doc.getString("description"));
                 tutorRLabel.setBounds(10, 10, 150, 25);
 
                 descriptionPanel.add(tutorRLabel);
