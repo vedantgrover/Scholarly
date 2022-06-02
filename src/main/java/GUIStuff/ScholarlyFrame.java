@@ -114,7 +114,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 String tutorInfo = "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
                         + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
                 JTextArea tutorIDisplay = new JTextArea(tutorInfo);
-                tutorIDisplay.setBounds(10, 45, 642, 370);
+                tutorIDisplay.setBounds(10, 10, 642, 370);
                 tutorIDisplay.setLineWrap(true);
                 tutorIDisplay.setWrapStyleWord(true);
                 tutorIDisplay.setOpaque(false);
