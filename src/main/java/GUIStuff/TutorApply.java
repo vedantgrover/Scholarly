@@ -41,7 +41,7 @@ public class TutorApply implements ActionListener {
     public TutorApply() {
 
         label.setBounds(0, 0, 100, 50);
-        label.setFont(new Font(null, Font.PLAIN, 20));
+        label.setFont(new Font(null, Font.PLAIN, 14));
 
         //textArea.setPreferredSize();
 
@@ -55,6 +55,8 @@ public class TutorApply implements ActionListener {
         scrollableText.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollableText.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         
 
         frame.getContentPane().add(scrollableText);
@@ -64,7 +66,7 @@ public class TutorApply implements ActionListener {
         frame.add(scrollableText);
         frame.add(buttonLol);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1000, 600));
+        frame.setPreferredSize(new Dimension(700, 400));
 
         frame.setLayout(new FlowLayout());
         frame.pack();
@@ -77,10 +79,10 @@ public class TutorApply implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonLol) {
             String tempVar = textArea.getText();
-            if (tempVar.length()>151) {
-                JOptionPane.showMessageDialog(frame,"Limit to 150 charecters");
+            if (tempVar.length()>451) {
+                JOptionPane.showMessageDialog(frame,"Limit to 450 charecters");
             }
-            if (tempVar.length()<151) {
+            if (tempVar.length()<450) {
                 db.makeTutorRequest(WelcomeFrame.username.getText(), tempVar);
                 frame.dispose();
             }
