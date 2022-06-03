@@ -30,7 +30,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
     private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel, emailLabel, phoneLabel;
     protected static JTextField firstName, lastName, org, registerUsername, password, email, phone;
-    private static JButton register, back;
+    private static JButton next, register, back;
 
     private static final String BASIC_INFO = "Basic Info";
     private static final String LOGIN_INFO = "Login Info";
@@ -211,6 +211,15 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         org = new JTextField();
         org.setBounds(100, 215, 193, 28);
         basicPanel.add(org);
+
+        next = new JButton("Next");
+        next.setBounds(100, 262, 90, 25);
+        next.setForeground(Color.WHITE);
+        next.setBackground(Color.BLACK);
+        next.addActionListener(e -> {
+            pane.setSelectedIndex(1);
+        });
+        basicPanel.add(next);
 
         back = new JButton("Back");
         back.setBounds(25, 125, 45, 25);
