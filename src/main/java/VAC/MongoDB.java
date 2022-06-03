@@ -9,6 +9,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
+
+import GUIStuff.WelcomeFrame;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -83,6 +86,13 @@ public class MongoDB {
 
         return docs;
     }
+    
+    public FindIterable<Document> getStudentRequests(String org) {
+        Document query = new Document("organization",org).append("status", "aStudent").append("isTutor", false).append("isAdmin", false);
+        FindIterable<Document> docs = data.find(query);
+
+        return docs;
+    }
 
     public void makeTutorRequest(String username, String description) {
         if (!checkIfUserExists(username)) {
@@ -102,6 +112,53 @@ public class MongoDB {
             UpdateResult result = data.updateOne(query, updates, options);
         } catch (MongoException me) {
             System.err.println("Unable to update due to an error: " + me);
+        }
+    }
+
+    public void studentSubjectRequest(String username, String description){
+        if (!checkIfUserExists(username)) {
+            return;
+        }
+
+        Document query = new Document("username", username);
+        
+        Bson updates = Updates.set("status", "aStudent");
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+        }
+
+    }
+
+    public void recruitNewTutor(String username, boolean approve) {
+        Document query2 = new Document("username", username);
+        
+        if (approve) {
+            Bson updates = Updates.combine(
+                    Updates.set("status", "none")
+            );
+
+            UpdateOptions options = new UpdateOptions().upsert(true);
+
+            try {
+                UpdateResult result = data.updateOne(query2, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
+        } else {
+            Bson updates = Updates.set("status", "none");
+
+            UpdateOptions options = new UpdateOptions().upsert(true);
+
+            try {
+                UpdateResult result = data.updateOne(query2, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
         }
     }
 

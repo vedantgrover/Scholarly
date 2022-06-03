@@ -125,6 +125,12 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
         }
+        if (data.getBoolean("isTutor", true)) {
+            JButton button2 = new JButton("Request Tutor help");
+            button2.setBounds(333, 415, 660, 150);
+            button2.addActionListener(e -> new StudentApply());
+            this.getContentPane().add(button2);
+        }
 
         this.pack();
         this.setLocationRelativeTo(null);
