@@ -213,7 +213,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         basicPanel.add(org);
 
         next = new JButton("Next");
-        next.setBounds(100, 262, 90, 25);
+        next.setBounds(100, 250, 90, 25);
         next.setForeground(Color.WHITE);
         next.setBackground(Color.BLACK);
         next.addActionListener(e -> {
@@ -256,12 +256,16 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         register.setForeground(Color.WHITE);
         register.setBackground(Color.BLACK);
         register.addActionListener(e -> {
-            if (!db.createUser(firstName.getText(), lastName.getText(), email.getText(), phone.getText(), org.getText(),
-                    registerUsername.getText(), password.getText())) {
-                JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+            if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
+                JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
-                frame.dispose();
-                this.loginGUI();
+                if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
+                        registerUsername.getText().trim(), password.getText().trim())) {
+                    JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+                } else {
+                    frame.dispose();
+                    this.loginGUI();
+                }
             }
         });
         loginPanel.add(register);
