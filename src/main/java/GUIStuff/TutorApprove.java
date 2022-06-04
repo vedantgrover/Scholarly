@@ -83,6 +83,11 @@ public class TutorApprove extends JFrame implements ActionListener {
                     descriptionPanel.removeAll();
                     descriptionPanel.revalidate();
                     descriptionPanel.repaint();
+
+                    Document tutorDocument = db.findUser(WelcomeFrame.username.getText());
+                    String emailMessage = "Hello " + doc.getString("name") + ",\n\nYou have been approved by " + tutorDocument.getString("name") + "! Here is there contact info: \n\nEmail: " + tutorDocument.getString("email") + "\nPhone Number: " + tutorDocument.getString("number");
+                    ScholarlyFrame.eh.sendEmail(doc.getString("email"), "You now have a tutor!", emailMessage);
+
                     JOptionPane.showMessageDialog(myFrame, "Approved!");
                 });
                 descriptionPanel.add(approveButton);
@@ -97,6 +102,8 @@ public class TutorApprove extends JFrame implements ActionListener {
                     myFrame.remove(descriptionPanel);
                     myFrame.revalidate();
                     myFrame.repaint();
+
+                    ScholarlyFrame.eh.sendEmail(doc.getString("email"), "We apologize", "Hello " + doc.getString("name") + ",\n\nWe regret to inform you that your application for a tutor has been denied.");
                     JOptionPane.showMessageDialog(myFrame, "Declined!");
                 });
                 descriptionPanel.add(declineButton);

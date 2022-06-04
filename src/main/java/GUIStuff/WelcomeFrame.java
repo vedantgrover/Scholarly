@@ -1,5 +1,6 @@
 package GUIStuff;
 
+import VAC.EmailHandler;
 import VAC.MongoDB;
 import VAC.Scholarly;
 
@@ -18,6 +19,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
     private final int WIDTH = ScholarlyFrame.WIDTH / 2;
     private final int HEIGHT = ScholarlyFrame.HEIGHT / 2;
     private static MongoDB db = ScholarlyFrame.db;
+    private static EmailHandler eh = ScholarlyFrame.eh;
 
     private JButton loginButton;
     private JButton registerButton;
@@ -259,7 +261,9 @@ public class WelcomeFrame extends JFrame implements ActionListener {
             if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
-                if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
+                if (!eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. You should be all good now since this message actually went through.\n\nThank you!")) {
+                    JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
+                } else if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
                         registerUsername.getText().trim(), password.getText().trim())) {
                     JOptionPane.showMessageDialog(frame, "An account with this username already exists");
                 } else {

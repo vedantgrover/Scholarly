@@ -201,7 +201,7 @@ public class MongoDB {
         Document query = new Document("username", username);
         if (approve) {
             Bson updates = Updates.combine(
-                Updates.set("status", ""),
+                Updates.set("status", "none"),
                 Updates.set("description", "")
         );
             UpdateOptions options = new UpdateOptions().upsert(false);
@@ -213,7 +213,7 @@ public class MongoDB {
             }
         } else {
             Bson updates = Updates.combine(
-                Updates.set("status", ""),
+                Updates.set("status", "none"),
                 Updates.set("description", "")
             );
             UpdateOptions options = new UpdateOptions().upsert(true);

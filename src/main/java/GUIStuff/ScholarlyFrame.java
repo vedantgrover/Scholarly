@@ -1,5 +1,6 @@
 package GUIStuff;
 
+import VAC.EmailHandler;
 import VAC.MongoDB;
 import VAC.Scholarly;
 import com.mongodb.client.FindIterable;
@@ -21,6 +22,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     protected static final int WIDTH = 1000;
     protected static final int HEIGHT = 600;
     protected static final MongoDB db = new MongoDB();
+    protected static final EmailHandler eh = new EmailHandler();
 
     protected static JFrame myFrame;
 

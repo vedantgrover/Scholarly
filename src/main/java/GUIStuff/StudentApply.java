@@ -17,7 +17,7 @@ public class StudentApply implements ActionListener {
     JFrame frame = new JFrame();
     JPanel panel = new JPanel();
     JLabel label = new JLabel(
-            "Select the subjects from which tutotrs within your organization can help you with");
+            "Select the subjects from which tutors within your organization can help you with");
     JTextField textField = new JTextField();
     JButton buttonLol = new JButton("Send to Tutors");
     JTextArea textArea = new JTextArea(10, 20);
