@@ -2,7 +2,6 @@ package GUIStuff;
 
 import VAC.MongoDB;
 import VAC.Scholarly;
-import org.bson.Document;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class WelcomeFrame extends JFrame implements ActionListener {
     private final int WIDTH = ScholarlyFrame.WIDTH / 2;
@@ -32,7 +30,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
     private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel, emailLabel, phoneLabel;
     protected static JTextField firstName, lastName, org, registerUsername, password, email, phone;
-    private static JButton register, back;
+    private static JButton next, register, back;
 
     private static final String BASIC_INFO = "Basic Info";
     private static final String LOGIN_INFO = "Login Info";
@@ -106,9 +104,8 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         JFrame frame = new JFrame();
         frame.setTitle("Login Page");
-        frame.setLocationRelativeTo(null);
         frame.add(panel);
-        frame.setSize(new Dimension(400, 200));
+        frame.setPreferredSize(new Dimension(400, 200));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setIconImage(image);
@@ -155,6 +152,8 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         backToButton.setFocusable(false);
         panel.add(backToButton);
 
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -168,7 +167,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         frame.setTitle("Login Page");
         frame.setLocationRelativeTo(null);
         frame.add(basicPanel);
-        frame.setSize(new Dimension(400, 400));
+        frame.setPreferredSize(new Dimension(400, 400));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setIconImage(image);
@@ -213,6 +212,15 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         org.setBounds(100, 215, 193, 28);
         basicPanel.add(org);
 
+        next = new JButton("Next");
+        next.setBounds(100, 250, 90, 25);
+        next.setForeground(Color.WHITE);
+        next.setBackground(Color.BLACK);
+        next.addActionListener(e -> {
+            pane.setSelectedIndex(1);
+        });
+        basicPanel.add(next);
+
         back = new JButton("Back");
         back.setBounds(25, 125, 45, 25);
         back.setBackground(Color.white);
@@ -223,11 +231,6 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         back.setMargin(new Insets(0, 0, 0, 0));
         back.setFocusable(false);
         basicPanel.add(back);
-
-        JPanel communicationPanel = new JPanel();
-        communicationPanel.setLayout(null);
-
-
 
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
@@ -253,12 +256,16 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         register.setForeground(Color.WHITE);
         register.setBackground(Color.BLACK);
         register.addActionListener(e -> {
-            if (!db.createUser(firstName.getText(), lastName.getText(), email.getText(), phone.getText(), org.getText(),
-                    registerUsername.getText(), password.getText())) {
-                JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+            if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
+                JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
-                frame.dispose();
-                this.loginGUI();
+                if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
+                        registerUsername.getText().trim(), password.getText().trim())) {
+                    JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+                } else {
+                    frame.dispose();
+                    this.loginGUI();
+                }
             }
         });
         loginPanel.add(register);
@@ -270,6 +277,8 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         frame.getContentPane().add(pane);
 
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }

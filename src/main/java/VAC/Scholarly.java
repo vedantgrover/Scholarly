@@ -16,14 +16,14 @@ public class Scholarly {
             System.out.println("No Account");
             return false;
         }
-        
+
         Document user = db.findUser(username);
         if (user.get("username").equals(username) && user.get("password").equals(password)) {
             return true;
         }
 
         return false;
-        
+
     }
 
     public static void register() {

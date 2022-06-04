@@ -1,12 +1,19 @@
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 /**
  * The Code that I wrote within this class is a bit of an example on what we COULD do when we register users into the DB. 
@@ -19,7 +26,7 @@ public class MongoDBTest {
     public static MongoDatabase database; // The thingiemabobber that stores the Collections of Documents.
     public static MongoCollection<Document> testDocs; // The thing that stores the documents. (Collection)
     public static void main(String[] args) {
-        //mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
+        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority")); // Connecting to the server. THE STRING SHOULD NOT LEAVE THE CODE PLS
         database = mongoClient.getDatabase("VAC"); // Grabbing all the data from the database and making it interactable with the code.
         testDocs = database.getCollection("userData"); // Grabbing all the documents from the data and putting it into a MongoCollection within the code.
 
@@ -51,6 +58,32 @@ public class MongoDBTest {
             // Document next = cursor.cursor().next();
             System.out.println(it.next());
         }
+
+        query = new Document("username", "person1");
+
+        Bson updates = Updates.combine(
+            Updates.set("description", "I have updated my description"),
+            Updates.addToSet("ego", 999),
+            Updates.currentTimestamp("lastUpdated")
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = testDocs.updateOne(query, updates, options);
+            System.out.println("Modified document count: " + result.getModifiedCount());
+            System.out.println("Upserted id: " + result.getUpsertedId()); // only contains a value when an upsert is performed
+        } catch (MongoException me) {
+            System.err.println("Unable to update due to an error: " + me);
+        }
+
+        List<Document> tutors = new ArrayList<Document>();
+        //tutors.add(new Document("tutorName", "Example Name").append("TutorDescription", "I am the Tutor Description"));
+
+        Document doc = new Document("TutorRequests", tutors);
+        testDocs.insertOne(doc);
+
+        //System.out.println(doc);
 
         query = new Document();
         testDocs.deleteMany(query);
