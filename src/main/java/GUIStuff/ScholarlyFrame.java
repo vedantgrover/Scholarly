@@ -125,11 +125,17 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
         }
-        if (data.getBoolean("isTutor", true)) {
+        if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
             JButton button2 = new JButton("Request Tutor help");
             button2.setBounds(333, 415, 660, 150);
             button2.addActionListener(e -> new StudentApply());
             this.getContentPane().add(button2);
+        }
+        if (data.getBoolean("isTutor")) {
+            JButton button3 = new JButton("Check out student tutor requests");
+            button3.setBounds(333, 415, 660, 150);
+            button3.addActionListener(e -> new TutorApprove());
+            this.getContentPane().add(button3);
         }
 
         this.pack();
@@ -142,6 +148,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         frame.removeAll();
         frame.revalidate();
         frame.repaint();
+    }
+
+    public static String studentInfo(Document doc) { 
+        return "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
+        + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
     }
 
     public static void createNewTutorButton(Document doc) {

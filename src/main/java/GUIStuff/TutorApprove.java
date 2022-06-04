@@ -30,7 +30,7 @@ public class TutorApprove extends JFrame implements ActionListener {
         declineButton = new JButton("Decline");
 
         JFrame myFrame = this;
-        this.setTitle("Tutor Requests");
+        this.setTitle("Students that have requested help");
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -39,7 +39,7 @@ public class TutorApprove extends JFrame implements ActionListener {
         this.setLayout(null);
 
         FindIterable<Document> docs = db
-                .getTutorRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+                .getStudentRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
         Iterator<Document> it = docs.iterator();
 
         JPanel panel = new JPanel();
@@ -64,7 +64,7 @@ public class TutorApprove extends JFrame implements ActionListener {
                 // JLabel tutorRLabel = new JLabel(doc.getString("description"));
                 // tutorRLabel.setBounds(10, 10, 453, HEIGHT);
 
-                JTextArea tutorRText = new JTextArea(doc.getString("description"));
+                JTextArea tutorRText = new JTextArea(ScholarlyFrame.studentInfo(doc));
                 tutorRText.setBounds(10, 10, 434, 300);
                 tutorRText.setEditable(false);
                 tutorRText.setOpaque(false);
@@ -73,10 +73,10 @@ public class TutorApprove extends JFrame implements ActionListener {
 
                 approveButton.setBounds(descriptionPanel.getWidth() / 2 - 5, 307, descriptionPanel.getWidth() / 2, 50);
                 approveButton.addActionListener(event -> {
-                    db.recruit(doc.getString("username"), true);
-                    ScholarlyFrame.createNewTutorButton(doc);
-                    ScholarlyFrame.panel.revalidate();
-                    ScholarlyFrame.panel.repaint();
+                    db.tutorStudentConnect(doc.getString("username"), true, doc.getString("description"));
+                    //ScholarlyFrame.createNewTutorButton(doc);
+                    //ScholarlyFrame.panel.revalidate();
+                    //ScholarlyFrame.panel.repaint();
                     panel.remove(tutorRButton);
                     panel.revalidate();
                     panel.repaint();
@@ -89,7 +89,8 @@ public class TutorApprove extends JFrame implements ActionListener {
 
                 declineButton.setBounds(5, 307, descriptionPanel.getWidth() / 2, 50);
                 declineButton.addActionListener(event -> {
-                    db.recruit(doc.getString("username"), false);
+                    //db.recruit(doc.getString("username"), true);
+                    db.tutorStudentConnect(doc.getString("username"), false, doc.getString("description"));
                     panel.remove(tutorRButton);
                     panel.revalidate();
                     panel.repaint();

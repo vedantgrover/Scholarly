@@ -115,42 +115,49 @@ public class MongoDB {
         }
     }
 
+    Document queryLol;
     public void studentSubjectRequest(String username, String description){
+        //works
         if (!checkIfUserExists(username)) {
             return;
         }
 
-        Document query = new Document("username", username);
+        queryLol = new Document("username", username);
         
-        Bson updates = Updates.set("status", "aStudent");
-
+        Bson updates = Updates.combine(
+                Updates.set("status", "aStudent"),
+                Updates.set("description", description)
+        );
         UpdateOptions options = new UpdateOptions().upsert(true);
 
         try {
-            UpdateResult result = data.updateOne(query, updates, options);
+            UpdateResult result = data.updateOne(queryLol, updates, options);
         } catch (MongoException me) {
             System.err.println("Unable to update due to an error: " + me);
         }
 
     }
 
+    
+
     public void recruitNewTutor(String username, boolean approve) {
         Document query2 = new Document("username", username);
         
         if (approve) {
             Bson updates = Updates.combine(
-                    Updates.set("status", "none")
+                    Updates.set("description", "none")
             );
 
             UpdateOptions options = new UpdateOptions().upsert(true);
+            queryLol.remove(username);
 
             try {
-                UpdateResult result = data.updateOne(query2, updates, options);
+                UpdateResult result = data.updateOne(queryLol, updates, options);
             } catch (MongoException me) {
                 System.err.println(me);
             }
         } else {
-            Bson updates = Updates.set("status", "none");
+            Bson updates = Updates.set("description", "none");
 
             UpdateOptions options = new UpdateOptions().upsert(true);
 
@@ -180,6 +187,35 @@ public class MongoDB {
         } else {
             Bson updates = Updates.set("status", "none");
 
+            UpdateOptions options = new UpdateOptions().upsert(true);
+
+            try {
+                UpdateResult result = data.updateOne(query, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
+        }
+    }
+
+    public void tutorStudentConnect(String username, boolean approve, String description) { 
+        Document query = new Document("username", username);
+        if (approve) {
+            Bson updates = Updates.combine(
+                Updates.set("status", ""),
+                Updates.set("description", "")
+        );
+            UpdateOptions options = new UpdateOptions().upsert(false);
+
+            try {
+                UpdateResult result = data.updateOne(query, updates, options);
+            } catch (MongoException me) {
+                System.err.println(me);
+            }
+        } else {
+            Bson updates = Updates.combine(
+                Updates.set("status", ""),
+                Updates.set("description", "")
+            );
             UpdateOptions options = new UpdateOptions().upsert(true);
 
             try {
