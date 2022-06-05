@@ -37,8 +37,11 @@ public class Runner {
          * - ✅ Create Tutor sign up (@Jericoz-JC)
          * - ✅ Create description box (@Jericoz-JC)
          * - ✅ Create Review Applications button (@vedantgrover)
-         * - ❌ Create command box (Hold off on this for now.)
-         * Soft Launch Happens
+         * - ✅ Create Student Application for tutors (@Jericoz-JC)
+         * - ✅ Review Student Applications (@Jericoz-JC)
+         * - ✅ Debug repeated button actions (@vedantgrover)
+         * - ❌ Create command box
+         * ➡️Soft Launch Happens
          * - Make the Wix Site for downloading and collecting payment for software
          * (lifetime for now. will change to monthly once we figure out how) (@AshGampa)
          * - Create the Discord Server. (@vedantgrover & @AshGampa & @Jericoz-JC)
