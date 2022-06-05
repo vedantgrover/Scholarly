@@ -287,6 +287,133 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
     }
 
+    public void editRegister() {
+        JTabbedPane pane = new JTabbedPane();
+
+        JPanel basicPanel = new JPanel();
+        basicPanel.setLayout(null);
+
+        JFrame frame = new JFrame();
+        frame.setTitle("Login Page");
+        frame.setLocationRelativeTo(null);
+        frame.add(basicPanel);
+        frame.setPreferredSize(new Dimension(400, 400));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.setIconImage(image);
+
+        firstNameLabel = new JLabel("First Name");
+        firstNameLabel.setBounds(100, 8, 70, 20);
+        basicPanel.add(firstNameLabel);
+
+        firstName = new JTextField();
+        firstName.setBounds(100, 27, 193, 28);
+        basicPanel.add(firstName);
+
+        lastNameLabel = new JLabel("Last Name");
+        lastNameLabel.setBounds(100, 55, 70, 20);
+        basicPanel.add(lastNameLabel);
+
+        lastName = new JTextField();
+        lastName.setBounds(100, 75, 193, 28);
+        basicPanel.add(lastName);
+
+        emailLabel = new JLabel("Email");
+        emailLabel.setBounds(100, 102, 70, 20);
+        basicPanel.add(emailLabel);
+
+        email = new JTextField();
+        email.setBounds(100, 121, 193, 28);
+        basicPanel.add(email);
+
+        phoneLabel = new JLabel("Phone Number");
+        phoneLabel.setBounds(100, 149, 100, 20);
+        basicPanel.add(phoneLabel);
+
+        phone = new JTextField();
+        phone.setBounds(100, 168, 193, 28);
+        basicPanel.add(phone);
+
+        orgLabel = new JLabel("Organization");
+        orgLabel.setBounds(100, 196, 100, 20);
+        basicPanel.add(orgLabel);
+
+        org = new JTextField();
+        org.setBounds(100, 215, 193, 28);
+        basicPanel.add(org);
+
+        next = new JButton("Next");
+        next.setBounds(100, 250, 90, 25);
+        next.setForeground(Color.WHITE);
+        next.setBackground(Color.BLACK);
+        next.addActionListener(e -> {
+            pane.setSelectedIndex(1);
+        });
+        basicPanel.add(next);
+
+        back = new JButton("Back");
+        back.setBounds(25, 125, 45, 25);
+        back.setBackground(Color.white);
+        back.addActionListener(e -> {
+            frame.dispose();
+            new WelcomeFrame();
+        });
+        back.setMargin(new Insets(0, 0, 0, 0));
+        back.setFocusable(false);
+        basicPanel.add(back);
+
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(null);
+
+        usernameLabel = new JLabel("Username");
+        usernameLabel.setBounds(100, 8, 70, 20);
+        loginPanel.add(usernameLabel);
+
+        registerUsername = new JTextField();
+        registerUsername.setBounds(100, 27, 193, 28);
+        loginPanel.add(registerUsername);
+
+        passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(100, 55, 70, 20);
+        loginPanel.add(passwordLabel);
+
+        password = new JTextField();
+        password.setBounds(100, 75, 193, 28);
+        loginPanel.add(password);
+
+        register = new JButton("Register");
+        register.setBounds(100, 110, 90, 25);
+        register.setForeground(Color.WHITE);
+        register.setBackground(Color.BLACK);
+        register.addActionListener(e -> {
+            if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
+                JOptionPane.showMessageDialog(frame, "Missing Fields");
+            } else {
+                if (!eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. You should be all good now since this message actually went through.\n\nThank you!")) {
+                    JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
+                } else if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
+                        registerUsername.getText().trim(), password.getText().trim())) {
+                    JOptionPane.showMessageDialog(frame, "An account with this username already exists");
+                } else {
+                    frame.dispose();
+                    this.loginGUI();
+                }
+            }
+        });
+        loginPanel.add(register);
+
+        loginPanel.add(back);
+
+        pane.add(BASIC_INFO, basicPanel);
+        pane.add(LOGIN_INFO, loginPanel);
+
+        frame.getContentPane().add(pane);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {

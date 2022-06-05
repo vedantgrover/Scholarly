@@ -31,12 +31,9 @@ public class MongoDB {
     public static MongoCollection<Document> data;
 
     public MongoDB() {
-        mongoClient = new MongoClient(new MongoClientURI(
-                "mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
+        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
         database = mongoClient.getDatabase("VAC");
         data = database.getCollection("userData");
-
-        // data.deleteMany(new Document());
     }
 
     public boolean checkIfUserExists(String username) {
@@ -47,6 +44,10 @@ public class MongoDB {
 
     public Document findUser(String username) {
         return data.find(new Document("username", username)).first();
+    }
+
+    public Document findUserByName(String name) {
+        return data.find(new Document("name", name)).first();
     }
 
     public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org,
