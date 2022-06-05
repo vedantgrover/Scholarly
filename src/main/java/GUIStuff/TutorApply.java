@@ -17,7 +17,7 @@ public class TutorApply implements ActionListener {
     JFrame frame = new JFrame();
     JPanel panel = new JPanel();
     JLabel label = new JLabel(
-            "Type your reasons and an Administrator at your organization can later connect and approve your approval. ");
+            "Type your reasons and an Administrator at your organization can later connect and approve your approval.");
     JTextField textField = new JTextField();
     JButton buttonLol = new JButton("Send to Administrator");
     JTextArea textArea = new JTextArea(10, 20);

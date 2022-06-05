@@ -92,19 +92,15 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         this.getContentPane().add(loginInfoPanel);
 
-        FindIterable<Document> docs = db
-                .getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
-        Iterator<Document> it = docs.iterator();
+        FindIterable<Document> docs = db.getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(maxTutors, 1));
-        // panel.setMaximumSize(new Dimension(100, 100 * people.length));
 
-        pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        while (it.hasNext()) {
-            createNewTutorButton(it.next());
+        for (Document tutorDoc : docs) {
+            createNewTutorButton(tutorDoc);
         }
 
         panel.setPreferredSize(new Dimension(pane.getWidth(), 12000));
@@ -113,6 +109,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         pane.setViewportView(panel);
 
+        this.getContentPane().add(tutorPanel);
         this.getContentPane().add(pane);
 
         JButton applyButton = new JButton("Apply");
@@ -128,15 +125,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             this.getContentPane().add(button);
         }
         if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
-            JButton button2 = new JButton("Request Tutor help");
+            JButton button2 = new JButton("Request For a Tutor");
             button2.setBounds(333, 415, 660, 150);
             button2.addActionListener(e -> new StudentApply());
             this.getContentPane().add(button2);
-        }
-        if (data.getBoolean("isTutor")) {
-            JButton button3 = new JButton("Check out student tutor requests");
+        } else if (data.getBoolean("isTutor")) {
+            JButton button3 = new JButton("Student Requests");
             button3.setBounds(333, 415, 660, 150);
-            button3.addActionListener(e -> new TutorApprove());
+            button3.addActionListener(e -> new StudentRequests());
             this.getContentPane().add(button3);
         }
 
@@ -144,12 +140,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-    }
-
-    public static void refresh(JFrame frame) {
-        frame.removeAll();
-        frame.revalidate();
-        frame.repaint();
     }
 
     public static String studentInfo(Document doc) { 
@@ -168,10 +158,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorPanel.setLayout(null);
             tutorPanel.setBounds(333, 45, 652, 370);
 
-            JLabel label = new JLabel(doc.getString("username"));
-            label.setBounds(10, 45, 150, 25);
-            // tutorPanel.add(label);
-
             String tutorInfo = "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
                     + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
             JTextArea tutorIDisplay = new JTextArea(tutorInfo);
@@ -184,7 +170,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             // Create Request Button for Tutors
 
             tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-            myFrame.getContentPane().add(tutorPanel);
             tutorPanel.revalidate();
             tutorPanel.repaint();
         });
@@ -194,9 +179,5 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == applyTutorButton) {
-            TutorApply newTutor = new TutorApply();
-        }
-    }
+    public void actionPerformed(ActionEvent e) {}
 }
