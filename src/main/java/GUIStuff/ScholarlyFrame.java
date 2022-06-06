@@ -119,11 +119,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.getContentPane().add(descriptionPanel);
         this.getContentPane().add(pane);
 
-        JButton applyButton = new JButton("Apply");
-        applyButton.setBounds(0, 415, pane.getWidth(), 150);
-        applyButton.addActionListener(e -> new TutorApply());
-        this.getContentPane().add(applyButton);
-
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
             JButton button = new JButton("Tutor Requests");
@@ -131,9 +126,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
 
-            JButton applyButton1 = new JButton("Enact more admins");
+            JButton applyButton1 = new JButton("Create Admins");
             applyButton1.setBounds(0, 415, pane.getWidth(), 150);
             applyButton1.addActionListener(e -> new AdminApply());
+            this.getContentPane().add(applyButton1);
+        } else {
+            JButton applyButton = new JButton("Apply");
+            applyButton.setBounds(0, 415, pane.getWidth(), 150);
+            applyButton.addActionListener(e -> new TutorApply());
             this.getContentPane().add(applyButton);
         }
         if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
@@ -166,6 +166,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
                 updateDescription();
             });
             panel.add(tutorButton);
+            tutorButtons.add(tutorButton);
         }
     }
 
@@ -222,6 +223,16 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         panel.add(tutorButton);
         tutors.add(db.findUser(doc.getString("username")));
         tutorButtons.add(tutorButton);
+    }
+    
+    public static void removeTutorButton(Document doc) {
+        for (JButton cb : tutorButtons) {
+            if (cb.getText().equals(doc.getString("name"))) {
+                panel.remove(cb);
+                tutorButtons.remove(cb);
+                break;
+            }
+        }
     }
 
     @Override

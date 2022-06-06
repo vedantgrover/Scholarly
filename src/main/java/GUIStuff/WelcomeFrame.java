@@ -428,8 +428,6 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         });
         loginPanel.add(register);
 
-        loginPanel.add(back);
-
         pane.add(BASIC_INFO, basicPanel);
         pane.add(LOGIN_INFO, loginPanel);
 
