@@ -40,8 +40,15 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     protected static JScrollPane pane;
     protected static JPanel panel;
 
+    private static JPanel descriptionPanel = new JPanel();
+
+    private JTextArea tutorDescription = new JTextArea();
+
+    protected static FindIterable<Document> docs;
+
+    private String currentUser = "";
+
     public ScholarlyFrame() {
-        // db.switchToAdmin("CJobi");
         applyTutorButton = new JButton();
         myFrame = this;
         try {
@@ -57,7 +64,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setLayout(null);
 
-        new WelcomeFrame();
+        WelcomeFrame wf = new WelcomeFrame();
         while (!Scholarly.loggedIn) {
             System.out.println();
         }
@@ -66,7 +73,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JPanel loginInfoPanel = new JPanel();
         loginInfoPanel.setLayout(null);
-        loginInfoPanel.setBounds(0, 0, 987, 45);
+        loginInfoPanel.setBounds(0, 0, WIDTH - 15, 45);
 
         JLabel userName = new JLabel("Username: " + WelcomeFrame.username.getText());
         userName.setBounds(WIDTH / 4 - 75, 10, 150, 25);
@@ -74,6 +81,9 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JButton name = new JButton(db.findUser(WelcomeFrame.username.getText()).get("name").toString());
         name.setBounds(WIDTH / 2 - 75, 10, 150, 25);
+        name.addActionListener(e -> {
+            wf.editRegister();
+        });
         loginInfoPanel.add(name);
 
         if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isAdmin")) {
@@ -92,16 +102,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         this.getContentPane().add(loginInfoPanel);
 
-        FindIterable<Document> docs = db.getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        docs = db.getTutors(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(maxTutors, 1));
 
         pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        for (Document tutorDoc : docs) {
-            createNewTutorButton(tutorDoc);
-        }
+        listTutors(docs);
 
         panel.setPreferredSize(new Dimension(pane.getWidth(), 12000));
 
@@ -109,7 +117,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         pane.setViewportView(panel);
 
-        this.getContentPane().add(tutorPanel);
+        this.getContentPane().add(descriptionPanel);
         this.getContentPane().add(pane);
 
         JButton applyButton = new JButton("Apply");
@@ -140,6 +148,40 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+    }
+
+    private void listTutors(FindIterable<Document> tutorDocs) {
+        for (Document tutorDoc : tutorDocs) {
+            JButton tutorButton = new JButton(tutorDoc.getString("name"));
+            tutorButton.setBounds(0, 0, pane.getWidth(), 100);
+            tutorButton.addActionListener(e -> {
+                currentUser = tutorDoc.getString("username");
+
+                System.out.println(currentUser);
+
+                updateDescription();
+            });
+            panel.add(tutorButton);
+        }
+    }
+
+    private void updateDescription() {
+        descriptionPanel.removeAll();
+
+        descriptionPanel.setLayout(null);
+        descriptionPanel.setBounds(WIDTH / 3, 45, (WIDTH * 2/3) - 15, pane.getHeight());
+
+        tutorDescription.setText(ScholarlyFrame.studentInfo(db.findUser(currentUser)));
+        tutorDescription.setBounds(10, 10, 434, 300);
+        tutorDescription.setEditable(false);
+        tutorDescription.setOpaque(false);
+        tutorDescription.setLineWrap(true);
+        tutorDescription.setWrapStyleWord(true);
+
+        descriptionPanel.add(tutorDescription);
+        descriptionPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        descriptionPanel.revalidate();
+        descriptionPanel.repaint();
     }
 
     public static String studentInfo(Document doc) { 

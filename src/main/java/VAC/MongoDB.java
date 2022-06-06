@@ -74,6 +74,34 @@ public class MongoDB {
         return true;
     }
 
+    public boolean editUser(String firstName, String lastName, String email, String phoneNumber, String org,
+                              String username, String password, String description) {
+        if (!checkIfUserExists(username)) {
+            return false;
+        }
+
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.combine(
+            Updates.set("name", firstName + " " + lastName),
+            Updates.set("email", email),
+            Updates.set("number", phoneNumber),
+            Updates.set("organization", org),
+            Updates.set("username", username),
+            Updates.set("password", password),
+            Updates.set("description", description)
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            me.printStackTrace();
+        }
+        return true;
+    }
+
     public FindIterable<Document> getTutors(String org) {
         Document query = new Document("organization", org).append("isTutor", true);
         FindIterable<Document> docs = data.find(query);

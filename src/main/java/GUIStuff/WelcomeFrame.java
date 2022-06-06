@@ -9,6 +9,9 @@ import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import org.bson.Document;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -105,7 +108,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         panel.setLayout(null);
 
         JFrame frame = new JFrame();
-        frame.setTitle("Login Page");
+        frame.setTitle("Login");
         frame.add(panel);
         frame.setPreferredSize(new Dimension(400, 200));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,7 +169,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         basicPanel.setLayout(null);
 
         JFrame frame = new JFrame();
-        frame.setTitle("Login Page");
+        frame.setTitle("Registration");
         frame.setLocationRelativeTo(null);
         frame.add(basicPanel);
         frame.setPreferredSize(new Dimension(400, 400));
@@ -288,17 +291,19 @@ public class WelcomeFrame extends JFrame implements ActionListener {
     }
 
     public void editRegister() {
+        Document currentData = db.findUser(username.getText());
+
         JTabbedPane pane = new JTabbedPane();
 
         JPanel basicPanel = new JPanel();
         basicPanel.setLayout(null);
 
         JFrame frame = new JFrame();
-        frame.setTitle("Login Page");
+        frame.setTitle("Edit Info");
         frame.setLocationRelativeTo(null);
         frame.add(basicPanel);
         frame.setPreferredSize(new Dimension(400, 400));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.setIconImage(image);
 
@@ -306,8 +311,10 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         firstNameLabel.setBounds(100, 8, 70, 20);
         basicPanel.add(firstNameLabel);
 
+        String[] name = currentData.getString("name").split(" ");
         firstName = new JTextField();
         firstName.setBounds(100, 27, 193, 28);
+        firstName.setText(name[0]);
         basicPanel.add(firstName);
 
         lastNameLabel = new JLabel("Last Name");
@@ -316,6 +323,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         lastName = new JTextField();
         lastName.setBounds(100, 75, 193, 28);
+        lastName.setText(name[1]);
         basicPanel.add(lastName);
 
         emailLabel = new JLabel("Email");
@@ -324,6 +332,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         email = new JTextField();
         email.setBounds(100, 121, 193, 28);
+        email.setText(currentData.getString("email"));
         basicPanel.add(email);
 
         phoneLabel = new JLabel("Phone Number");
@@ -332,6 +341,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         phone = new JTextField();
         phone.setBounds(100, 168, 193, 28);
+        phone.setText(currentData.getString("number"));
         basicPanel.add(phone);
 
         orgLabel = new JLabel("Organization");
@@ -340,6 +350,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         org = new JTextField();
         org.setBounds(100, 215, 193, 28);
+        org.setText(currentData.getString("organization"));
         basicPanel.add(org);
 
         next = new JButton("Next");
@@ -371,6 +382,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         registerUsername = new JTextField();
         registerUsername.setBounds(100, 27, 193, 28);
+        registerUsername.setText(currentData.getString("username"));
         loginPanel.add(registerUsername);
 
         passwordLabel = new JLabel("Password");
@@ -379,25 +391,36 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
         password = new JTextField();
         password.setBounds(100, 75, 193, 28);
+        password.setText(currentData.getString("password"));
         loginPanel.add(password);
 
-        register = new JButton("Register");
-        register.setBounds(100, 110, 90, 25);
+        JLabel descriptionLabel = new JLabel("Description");
+        descriptionLabel.setBounds(100, 102, 70, 20);
+        loginPanel.add(descriptionLabel);
+
+        JTextArea description = new JTextArea();
+        description.setBounds(100, 121, 193, 124);
+        description.setText(currentData.getString("description"));
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        description.setEditable(false);
+        loginPanel.add(description);
+
+        if (currentData.getBoolean("isTutor") || currentData.getString("status").equals("aTutor") || currentData.getString("status").equals("aStudent")) {
+            description.setEditable(true);
+        }
+
+        register = new JButton("Submit");
+        register.setBounds(100, 250, 90, 25);
         register.setForeground(Color.WHITE);
         register.setBackground(Color.BLACK);
         register.addActionListener(e -> {
             if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
-                if (!eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. You should be all good now since this message actually went through.\n\nThank you!")) {
-                    JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
-                } else if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
-                        registerUsername.getText().trim(), password.getText().trim())) {
-                    JOptionPane.showMessageDialog(frame, "An account with this username already exists");
-                } else {
-                    frame.dispose();
-                    this.loginGUI();
-                }
+                db.editUser(firstName.getText(), lastName.getText(), email.getText(), phone.getText(), org.getText(), username.getText(), password.getText(), description.getText());
+                ScholarlyFrame.docs = db.getTutors(db.findUser(username.getText()).getString("organization"));
+                frame.dispose();
             }
         });
         loginPanel.add(register);
