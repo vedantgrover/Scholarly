@@ -121,6 +121,20 @@ public class MongoDB {
         }
     }
 
+    public void removeTutor(String username) {
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.set("isTutor", false);
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            UpdateResult result = data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            me.printStackTrace();
+        }
+    }
+
     public FindIterable<Document> getAllStudents(String org) {
         Document query = new Document("organization", org).append("isAdmin", false);
 

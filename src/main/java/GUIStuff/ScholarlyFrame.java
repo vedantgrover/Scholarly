@@ -32,7 +32,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private static final ArrayList<Document> tutors = new ArrayList<Document>();
     private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
 
-    private static JButton applyTutorButton;
+    private static JButton tutorRemoveButton;
 
     protected static BufferedImage image;
 
@@ -48,7 +48,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     private String currentUser = "";
 
     public ScholarlyFrame() {
-        applyTutorButton = new JButton();
         myFrame = this;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
@@ -121,13 +120,37 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         Document data = db.findUser(WelcomeFrame.username.getText());
         if (data.getBoolean("isAdmin")) {
+            tutorRemoveButton = new JButton("Remove Tutor");
+            tutorRemoveButton.setBounds(0, 415, pane.getWidth(), 75);
+            tutorRemoveButton.setEnabled(false);
+            tutorRemoveButton.addActionListener(e -> {
+                String userPassword = JOptionPane.showInputDialog(myFrame, "Please Enter Your Password");
+                if (!userPassword.equals(data.getString("password"))) {
+                    JOptionPane.showMessageDialog(myFrame, "Incorrect Password");
+                }
+
+                db.removeTutor(currentUser);
+                removeTutorButton(db.findUser(currentUser));
+                panel.revalidate();
+                panel.repaint();
+
+                descriptionPanel.removeAll();
+                descriptionPanel.revalidate();
+                descriptionPanel.repaint();
+
+                Document currentTutorData = db.findUser(currentUser);
+                String message = "Hello " + currentTutorData.getString("name") + ",\n\nWe just got a notification saying that you are no longer a tutor! We hope that this was for the better. We are just informing you that you are no longer a tutor.\n\nBest Regards,\nScholarly";
+                eh.sendEmail(currentTutorData.getString("email"), "So...what happened?", message);
+            });
+            this.getContentPane().add(tutorRemoveButton);
+
             JButton button = new JButton("Tutor Requests");
             button.setBounds(333, 415, 660, 150);
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
 
             JButton applyButton1 = new JButton("Create Admins");
-            applyButton1.setBounds(0, 415, pane.getWidth(), 150);
+            applyButton1.setBounds(0, 490, pane.getWidth(), 75);
             applyButton1.addActionListener(e -> new AdminApply());
             this.getContentPane().add(applyButton1);
         } else {
@@ -160,6 +183,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorButton.setBounds(0, 0, pane.getWidth(), 100);
             tutorButton.addActionListener(e -> {
                 currentUser = tutorDoc.getString("username");
+                tutorRemoveButton.setEnabled(true);
 
                 System.out.println(currentUser);
 

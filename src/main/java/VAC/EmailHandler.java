@@ -20,17 +20,6 @@ public class EmailHandler {
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
 
-//        session = Session.getInstance(properties, new Authenticator() {
-//            @Override
-//            protected PasswordAuthentication getPasswordAuthentication() {
-//                return new PasswordAuthentication("scholarlyreplybot@gmail.com", "zxaihisvsrnezqup");
-//            }
-//        });
-//
-//        session.setDebug(true);
-    }
-
-    public boolean sendEmail(String to, String subject, String messageToSend) {
         session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -39,6 +28,9 @@ public class EmailHandler {
         });
 
         session.setDebug(true);
+    }
+
+    public boolean sendEmail(String to, String subject, String messageToSend) {
         try {
             // Create a default MimeMessage object.
             MimeMessage message = new MimeMessage(session);
@@ -48,6 +40,7 @@ public class EmailHandler {
 
             // Set To: header field of the header.
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(MimeMessage.RecipientType.CC, new InternetAddress("vedantvgrover@gmail.com"));
 
             // Set Subject: header field
             message.setSubject(subject);
