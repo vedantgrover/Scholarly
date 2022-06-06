@@ -42,12 +42,15 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
     private BufferedImage image;
 
+    private JFrame myFrame;
+
     public WelcomeFrame() {
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/GUIStuff/logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        myFrame = this;
         this.setTitle("Scholarly Connect");
         this.setIconImage(image);
         this.setResizable(false);
@@ -264,7 +267,10 @@ public class WelcomeFrame extends JFrame implements ActionListener {
             if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
-                if (!eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. You should be all good now since this message actually went through.\n\nThank you!")) {
+                int randomNumber = (int) (Math.random() * 99) + 1;
+                eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. Here's a gift! Your confirmation code!\n\nYour code: " + randomNumber +  "\n\nThank you,\nScholarly");
+                int userNumber = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirmation Code"));
+                if (userNumber != randomNumber) {
                     JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
                 } else if (!db.createUser(firstName.getText().trim(), lastName.getText().trim(), email.getText().trim(), phone.getText().trim(), org.getText().trim(),
                         registerUsername.getText().trim(), password.getText().trim())) {
@@ -418,6 +424,14 @@ public class WelcomeFrame extends JFrame implements ActionListener {
             if (firstName.getText().trim().length() == 0 || lastName.getText().trim().length() == 0 || email.getText().trim().length() == 0 || phone.getText().trim().length() == 0 || org.getText().trim().length() == 0 || registerUsername.getText().trim().length() == 0 || password.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
+                if (!email.getText().equals(currentData.getString("email"))) {
+                    int randomNumber = (int) (Math.random() * 99) + 1;
+                    eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nLooks like you changed your email! Here's you're confirmation code!\n\nYour code: " + randomNumber +  "\n\nThank you,\nScholarly");
+                    int userNumber = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirmation Code"));
+                    if (userNumber != randomNumber) {
+                        JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
+                    }
+                }
                 db.editUser(firstName.getText(), lastName.getText(), email.getText(), phone.getText(), org.getText(), username.getText(), password.getText(), description.getText());
                 ScholarlyFrame.docs = db.getTutors(db.findUser(username.getText()).getString("organization"));
                 frame.dispose();
