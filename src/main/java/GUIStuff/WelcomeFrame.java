@@ -368,17 +368,6 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         });
         basicPanel.add(next);
 
-        back = new JButton("Back");
-        back.setBounds(25, 125, 45, 25);
-        back.setBackground(Color.white);
-        back.addActionListener(e -> {
-            frame.dispose();
-            new WelcomeFrame();
-        });
-        back.setMargin(new Insets(0, 0, 0, 0));
-        back.setFocusable(false);
-        basicPanel.add(back);
-
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
 

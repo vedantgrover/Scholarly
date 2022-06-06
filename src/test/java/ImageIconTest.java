@@ -10,7 +10,7 @@ public class ImageIconTest {
     public static void main(String[] args) {
         Object obj = new Object();
       try {
-        image  = ImageIO.read(obj.getClass().getResourceAsStream("/GUIStuff/logo.png"));
+        image  = ImageIO.read(obj.getClass().getResourceAsStream("/GUIStuff/logo1.png"));
       } catch (IOException e) {
           e.printStackTrace();
       }
