@@ -31,18 +31,18 @@
 /*
  * TabDemo.java
  */
- 
-import java.awt.*;
+
 import javax.swing.*;
- 
+import java.awt.*;
+
 public class CardLayoutTabs {
-    final static String BUTTONPANEL = "Tab with JButtons";
-    final static String TEXTPANEL = "Tab with JTextField";
+    final static String BUTTON_PANEL = "Tab with JButtons";
+    final static String TEXT_PANEL = "Tab with JTextField";
     final static int extraWindowWidth = 100;
- 
+
     public void addComponentToPane(Container pane) {
         JTabbedPane tabbedPane = new JTabbedPane();
- 
+
         //Create the "cards".
         JPanel card1 = new JPanel() {
             //Make the panel wider than it really needs, so
@@ -57,16 +57,16 @@ public class CardLayoutTabs {
         card1.add(new JButton("Button 1"));
         card1.add(new JButton("Button 2"));
         card1.add(new JButton("Button 3"));
- 
+
         JPanel card2 = new JPanel();
         card2.add(new JTextField("TextField", 20));
- 
-        tabbedPane.addTab(BUTTONPANEL, card1);
-        tabbedPane.addTab(TEXTPANEL, card2);
- 
+
+        tabbedPane.addTab(BUTTON_PANEL, card1);
+        tabbedPane.addTab(TEXT_PANEL, card2);
+
         pane.add(tabbedPane, BorderLayout.CENTER);
     }
- 
+
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -76,39 +76,29 @@ public class CardLayoutTabs {
         //Create and set up the window.
         JFrame frame = new JFrame("TabDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
         //Create and set up the content pane.
         CardLayoutTabs demo = new CardLayoutTabs();
         demo.addComponentToPane(frame.getContentPane());
- 
+
         //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
- 
+
     public static void main(String[] args) {
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
         /* Turn off metal's use of bold fonts */
         UIManager.put("swing.boldMetal", Boolean.FALSE);
-         
+
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(CardLayoutTabs::createAndShowGUI);
     }
 }

@@ -2,14 +2,14 @@ package ScrollPaneTestStuff;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class ButtonScrollPaneTest extends JFrame {
     public String[] people = new String[100];
+
     public ButtonScrollPaneTest() {
         int rows = 200;
-        for (int i = 0; i < people.length; i++) {
-            people[i] = "Jeff";
-        }
+        Arrays.fill(people, "Jeff");
 
         this.setTitle("ScrollPane Test");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,8 +23,8 @@ public class ButtonScrollPaneTest extends JFrame {
 
         JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        for (int i = 0; i < people.length; i++) {
-            JButton button = new JButton(people[i]);
+        for (String person : people) {
+            JButton button = new JButton(person);
             //button.setAlignmentX(Component.CENTER_ALIGNMENT);
             button.setPreferredSize(new Dimension(pane.getWidth(), 100));
             panel.add(button);
@@ -42,12 +42,7 @@ public class ButtonScrollPaneTest extends JFrame {
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                new ButtonScrollPaneTest();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(ButtonScrollPaneTest::new);
 
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CreateJScrollPaneExample {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JFrame frame = new JFrame("SpringLayout");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JScrollPane scroll = new JScrollPane();
@@ -20,8 +20,8 @@ public class CreateJScrollPaneExample {
 
 
         int j = 25;
-        for(int i =0;i<18;i++){
-            JLabel label = new JLabel("Enter Name " + i );
+        for (int i = 0; i < 18; i++) {
+            JLabel label = new JLabel("Enter Name " + i);
             JTextField text = new JTextField(15);
 
             mainPanel.add(label);
@@ -34,13 +34,13 @@ public class CreateJScrollPaneExample {
                     contentPane);
             layout.putConstraint(SpringLayout.WEST, text, 20, SpringLayout.EAST,
                     label);
-            j+=30;
+            j += 30;
         }
         mainPanel.setPreferredSize(new Dimension(mainPanel.getWidth(), 1500));
-        scroll.setPreferredSize(new Dimension(500,500));
+        scroll.setPreferredSize(new Dimension(500, 500));
         scroll.setViewportView(mainPanel);
         contentPane.add(scroll);
-        contentPane.add(buttonPanel,BorderLayout.SOUTH);
+        contentPane.add(buttonPanel, BorderLayout.SOUTH);
         //mainWindow.add(contentPane);
         frame.setSize(500, 600);
         frame.setVisible(true);

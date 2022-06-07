@@ -1,12 +1,7 @@
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 public class EmailTester {
 
@@ -18,7 +13,7 @@ public class EmailTester {
         // Sender's email ID needs to be mentioned
         String from = "scholarlyreplybot@gmail.com";
 
-        // Assuming you are sending email from through gmails smtp
+        // Assuming you are sending email from through gmail smtp
         String host = "smtp.gmail.com";
 
         // Get system properties
@@ -35,7 +30,7 @@ public class EmailTester {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("scholarlyreplybot@gmail.com", "zxaihisvsrnezqup");
+                return new PasswordAuthentication("scholarlyreplybot@gmail.com", "");
 
             }
 
