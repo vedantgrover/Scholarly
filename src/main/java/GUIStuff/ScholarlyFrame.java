@@ -119,13 +119,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.getContentPane().add(pane);
 
         Document data = db.findUser(WelcomeFrame.username.getText());
+        tutorRemoveButton = new JButton("Remove Tutor");
         if (data.getBoolean("isAdmin")) {
-            tutorRemoveButton = new JButton("Remove Tutor");
             tutorRemoveButton.setBounds(0, 415, pane.getWidth(), 75);
             tutorRemoveButton.setEnabled(false);
             tutorRemoveButton.addActionListener(e -> {
                 String userPassword = JOptionPane.showInputDialog(myFrame, "Please Enter Your Password");
-                if (!userPassword.equals(data.getString("password"))) {
+                if (userPassword != null && !userPassword.equals(data.getString("password"))) {
                     JOptionPane.showMessageDialog(myFrame, "Incorrect Password");
                 }
 
@@ -183,7 +183,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorButton.setBounds(0, 0, pane.getWidth(), 100);
             tutorButton.addActionListener(e -> {
                 currentUser = tutorDoc.getString("username");
-                tutorButton.setEnabled(true);
+                tutorRemoveButton.setEnabled(true);
 
                 System.out.println(currentUser);
 
