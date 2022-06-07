@@ -183,7 +183,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorButton.setBounds(0, 0, pane.getWidth(), 100);
             tutorButton.addActionListener(e -> {
                 currentUser = tutorDoc.getString("username");
-                tutorRemoveButton.setEnabled(true);
+                tutorButton.setEnabled(true);
 
                 System.out.println(currentUser);
 
