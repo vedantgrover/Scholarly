@@ -4,12 +4,8 @@ import org.bson.Document;
 
 public class Scholarly {
 
-    private static MongoDB db = new MongoDB();
+    private static final MongoDB db = new MongoDB();
     public static boolean loggedIn = false;
-
-    public static void run() {
-
-    }
 
     public static boolean login(String username, String password) {
         if (!db.checkIfUserExists(username)) {
@@ -18,15 +14,7 @@ public class Scholarly {
         }
 
         Document user = db.findUser(username);
-        if (user.get("username").equals(username) && user.get("password").equals(password)) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-    public static void register() {
+        return user.get("username").equals(username) && user.get("password").equals(password);
 
     }
 }

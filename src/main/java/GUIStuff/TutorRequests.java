@@ -8,29 +8,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class TutorRequests extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
     private static final int HEIGHT = 400;
 
-    private static MongoDB db = ScholarlyFrame.db;
+    private static final MongoDB db = ScholarlyFrame.db;
 
-    private static JPanel descriptionPanel = new JPanel();
-
-    private static ArrayList<JButton> tutorRButtons = new ArrayList<JButton>();
-    private static ArrayList<Document> tutorRData = new ArrayList<Document>();
+    private static final JPanel descriptionPanel = new JPanel();
 
     protected static JButton approveButton, declineButton, currentButton;
-    private JTextArea tutorRText = new JTextArea();
+    private final JTextArea tutorRText = new JTextArea();
 
-    private JPanel panel;
-    private JFrame myFrame;
-    private JScrollPane pane;
-
-    private FindIterable<Document> docs;
+    private final JPanel panel;
+    private final JFrame myFrame;
+    private final JScrollPane pane;
 
     private String currentUser = "";
 
@@ -50,13 +43,16 @@ public class TutorRequests extends JFrame implements ActionListener {
         approveButton.setBounds(WIDTH / 3 + 226, 310, 226, 50);
         declineButton.setBounds(WIDTH / 3, 310, 226, 50);
 
+        approveButton.setEnabled(false);
+        declineButton.setEnabled(false);
+
         approveButton.addActionListener(e -> approve());
         declineButton.addActionListener(e -> decline());
 
         this.getContentPane().add(approveButton);
         this.getContentPane().add(declineButton);
 
-        docs = db.getTutorRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        FindIterable<Document> docs = db.getTutorRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(200, 1));
