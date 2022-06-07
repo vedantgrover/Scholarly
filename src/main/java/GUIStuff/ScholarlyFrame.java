@@ -134,7 +134,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             JButton applyButton1 = new JButton("Enact more admins");
             applyButton1.setBounds(0, 415, pane.getWidth(), 150);
             applyButton1.addActionListener(e -> new AdminApply());
-            this.getContentPane().add(applyButton);
+            this.getContentPane().add(applyButton1);
         }
         if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
             JButton button2 = new JButton("Request For a Tutor");
