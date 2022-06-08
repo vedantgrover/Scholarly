@@ -40,11 +40,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     private static final JPanel descriptionPanel = new JPanel();
 
-    private final JTextArea tutorDescription = new JTextArea();
+    private final static JTextArea tutorDescription = new JTextArea();
 
     protected static FindIterable<Document> docs;
 
-    private String currentUser = "";
+    private static String currentUser = "";
 
     public ScholarlyFrame() {
         myFrame = this;
@@ -191,7 +191,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void updateDescription() {
+    private static void updateDescription() {
         descriptionPanel.removeAll();
 
         descriptionPanel.setLayout(null);
@@ -219,27 +219,12 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         JButton tutorButton = new JButton(doc.getString("name"));
         tutorButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
         tutorButton.addActionListener(e -> {
-            // System.out.println(doc.getString("name"));
+            currentUser = doc.getString("username");
+            tutorRemoveButton.setEnabled(true);
 
-            tutorPanel.removeAll();
+            System.out.println(currentUser);
 
-            tutorPanel.setLayout(null);
-            tutorPanel.setBounds(333, 45, 652, 370);
-
-            String tutorInfo = "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
-                    + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
-            JTextArea tutorIDisplay = new JTextArea(tutorInfo);
-            tutorIDisplay.setBounds(10, 10, 642, 370);
-            tutorIDisplay.setLineWrap(true);
-            tutorIDisplay.setWrapStyleWord(true);
-            tutorIDisplay.setEditable(false);
-            tutorIDisplay.setOpaque(false);
-            tutorPanel.add(tutorIDisplay);
-            // Create Request Button for Tutors
-
-            tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-            tutorPanel.revalidate();
-            tutorPanel.repaint();
+            updateDescription();
         });
         panel.add(tutorButton);
         tutorButtons.add(tutorButton);
