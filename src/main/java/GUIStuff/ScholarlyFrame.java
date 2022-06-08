@@ -25,30 +25,28 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     protected static JFrame myFrame;
 
-    private static JPanel tutorPanel = new JPanel();
+    private static final JPanel tutorPanel = new JPanel();
 
     private static final int maxTutors = 200;
 
-    private static final ArrayList<Document> tutors = new ArrayList<Document>();
-    private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
+    private static final ArrayList<JButton> tutorButtons = new ArrayList<>();
 
-    private static JButton applyTutorButton;
+    private static JButton tutorRemoveButton;
 
     protected static BufferedImage image;
 
     protected static JScrollPane pane;
     protected static JPanel panel;
 
-    private static JPanel descriptionPanel = new JPanel();
+    private static final JPanel descriptionPanel = new JPanel();
 
-    private JTextArea tutorDescription = new JTextArea();
+    private final JTextArea tutorDescription = new JTextArea();
 
     protected static FindIterable<Document> docs;
 
     private String currentUser = "";
 
     public ScholarlyFrame() {
-        applyTutorButton = new JButton();
         myFrame = this;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
@@ -80,9 +78,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JButton name = new JButton(db.findUser(WelcomeFrame.username.getText()).get("name").toString());
         name.setBounds(WIDTH / 2 - 75, 10, 150, 25);
-        name.addActionListener(e -> {
-            wf.editRegister();
-        });
+        name.addActionListener(e -> wf.editRegister());
         loginInfoPanel.add(name);
 
         if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isAdmin")) {
@@ -119,22 +115,46 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         this.getContentPane().add(descriptionPanel);
         this.getContentPane().add(pane);
 
-        JButton applyButton = new JButton("Apply");
-        applyButton.setBounds(0, 415, pane.getWidth(), 150);
-        applyButton.addActionListener(e -> new TutorApply());
-        this.getContentPane().add(applyButton);
-
         Document data = db.findUser(WelcomeFrame.username.getText());
+        tutorRemoveButton = new JButton("Remove Tutor");
         if (data.getBoolean("isAdmin")) {
+            tutorRemoveButton.setBounds(0, 415, pane.getWidth(), 75);
+            tutorRemoveButton.setEnabled(false);
+            tutorRemoveButton.addActionListener(e -> {
+                String userPassword = JOptionPane.showInputDialog(myFrame, "Please Enter Your Password");
+                if (userPassword != null && !userPassword.equals(data.getString("password"))) {
+                    JOptionPane.showMessageDialog(myFrame, "Incorrect Password");
+                }
+
+                db.removeTutor(currentUser);
+                removeTutorButton(db.findUser(currentUser));
+                panel.revalidate();
+                panel.repaint();
+
+                descriptionPanel.removeAll();
+                descriptionPanel.revalidate();
+                descriptionPanel.repaint();
+
+                Document currentTutorData = db.findUser(currentUser);
+                String message = "Hello " + currentTutorData.getString("name") + ",\n\nWe just got a notification saying that you are no longer a tutor! We hope that this was for the better. We are just informing you that you are no longer a tutor.\n\nBest Regards,\nScholarly";
+                eh.sendEmail(currentTutorData.getString("email"), "So...what happened?", message);
+            });
+            this.getContentPane().add(tutorRemoveButton);
+
             JButton button = new JButton("Tutor Requests");
             button.setBounds(333, 415, 660, 150);
             button.addActionListener(e -> new TutorRequests());
             this.getContentPane().add(button);
 
-            JButton applyButton1 = new JButton("Enact more admins");
-            applyButton1.setBounds(0, 415, pane.getWidth(), 150);
+            JButton applyButton1 = new JButton("Create Admins");
+            applyButton1.setBounds(0, 490, pane.getWidth(), 75);
             applyButton1.addActionListener(e -> new AdminApply());
             this.getContentPane().add(applyButton1);
+        } else {
+            JButton applyButton = new JButton("Apply");
+            applyButton.setBounds(0, 415, pane.getWidth(), 150);
+            applyButton.addActionListener(e -> new TutorApply());
+            this.getContentPane().add(applyButton);
         }
         if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
             JButton button2 = new JButton("Request For a Tutor");
@@ -160,12 +180,14 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorButton.setBounds(0, 0, pane.getWidth(), 100);
             tutorButton.addActionListener(e -> {
                 currentUser = tutorDoc.getString("username");
+                tutorRemoveButton.setEnabled(true);
 
                 System.out.println(currentUser);
 
                 updateDescription();
             });
             panel.add(tutorButton);
+            tutorButtons.add(tutorButton);
         }
     }
 
@@ -173,7 +195,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         descriptionPanel.removeAll();
 
         descriptionPanel.setLayout(null);
-        descriptionPanel.setBounds(WIDTH / 3, 45, (WIDTH * 2/3) - 15, pane.getHeight());
+        descriptionPanel.setBounds(WIDTH / 3, 45, (WIDTH * 2 / 3) - 15, pane.getHeight());
 
         tutorDescription.setText(ScholarlyFrame.studentInfo(db.findUser(currentUser)));
         tutorDescription.setBounds(10, 10, 434, 300);
@@ -188,9 +210,9 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         descriptionPanel.repaint();
     }
 
-    public static String studentInfo(Document doc) { 
+    public static String studentInfo(Document doc) {
         return "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
-        + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
+                + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
     }
 
     public static void createNewTutorButton(Document doc) {
@@ -220,10 +242,20 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             tutorPanel.repaint();
         });
         panel.add(tutorButton);
-        tutors.add(db.findUser(doc.getString("username")));
         tutorButtons.add(tutorButton);
     }
 
+    public static void removeTutorButton(Document doc) {
+        for (JButton cb : tutorButtons) {
+            if (cb.getText().equals(doc.getString("name"))) {
+                panel.remove(cb);
+                tutorButtons.remove(cb);
+                break;
+            }
+        }
+    }
+
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+    }
 }

@@ -3,65 +3,56 @@ package GUIStuff;
 import VAC.EmailHandler;
 import VAC.MongoDB;
 import VAC.Scholarly;
+import org.bson.Document;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import org.bson.Document;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class WelcomeFrame extends JFrame implements ActionListener {
-    private final int WIDTH = ScholarlyFrame.WIDTH / 2;
-    private final int HEIGHT = ScholarlyFrame.HEIGHT / 2;
-    private static MongoDB db = ScholarlyFrame.db;
-    private static EmailHandler eh = ScholarlyFrame.eh;
+    private static final MongoDB db = ScholarlyFrame.db;
+    private static final EmailHandler eh = ScholarlyFrame.eh;
 
-    private JButton loginButton;
-    private JButton registerButton;
+    private final JButton loginButton;
+    private final JButton registerButton;
 
-    private static JLabel password1, label;
     public static JTextField username;
-    private static JButton button;
-    private static JButton backToButton;
     public static JPasswordField Password;
 
     private static JLabel firstNameLabel, lastNameLabel, orgLabel, usernameLabel, passwordLabel, emailLabel, phoneLabel;
     protected static JTextField firstName, lastName, org, registerUsername, password, email, phone;
-    private static JButton next, register, back;
+    private static JButton next;
+    private static JButton register;
 
     private static final String BASIC_INFO = "Basic Info";
     private static final String LOGIN_INFO = "Login Info";
 
     private BufferedImage image;
 
-    private JFrame myFrame;
-
     public WelcomeFrame() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/GUIStuff/logo.png"));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        myFrame = this;
         this.setTitle("Scholarly Connect");
         this.setIconImage(image);
         this.setResizable(false);
+        int WIDTH = ScholarlyFrame.WIDTH / 2;
+        int HEIGHT = ScholarlyFrame.HEIGHT / 2;
         this.setSize(WIDTH, HEIGHT);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel welcomeInfo = new JPanel();
-        // welcomeInfo.setSize(new Dimension(100, 100)); // Check why this isn't
-        // working.
-        // welcomeInfo.setBackground(Color.BLACK);
         JPanel blueBorder1 = new JPanel(), blueBorder2 = new JPanel();
         JPanel blackBorder1 = new JPanel(), blackBorder2 = new JPanel();
 
@@ -118,7 +109,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         frame.setResizable(false);
         frame.setIconImage(image);
 
-        label = new JLabel("Username");
+        JLabel label = new JLabel("Username");
         label.setBounds(100, 8, 70, 20);
         panel.add(label);
 
@@ -126,7 +117,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         username.setBounds(100, 27, 193, 28);
         panel.add(username);
 
-        password1 = new JLabel("Password");
+        JLabel password1 = new JLabel("Password");
         password1.setBounds(100, 55, 70, 20);
         panel.add(password1);
 
@@ -134,12 +125,12 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         Password.setBounds(100, 75, 193, 28);
         panel.add(Password);
 
-        button = new JButton("Login");
+        JButton button = new JButton("Login");
         button.setBounds(100, 110, 90, 25);
         button.setForeground(Color.WHITE);
         button.setBackground(Color.BLACK);
         button.addActionListener(e -> {
-            if (Scholarly.login(username.getText(), Password.getText())) {
+            if (Scholarly.login(username.getText(), new String(Password.getPassword()))) {
                 System.out.println("Login Successful");
                 Scholarly.loggedIn = true;
                 frame.dispose();
@@ -149,7 +140,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         });
         panel.add(button);
 
-        backToButton = new JButton("Back");
+        JButton backToButton = new JButton("Back");
         backToButton.setBounds(25, 125, 45, 25);
         backToButton.setBackground(Color.white);
         backToButton.addActionListener(e -> {
@@ -224,12 +215,10 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         next.setBounds(100, 250, 90, 25);
         next.setForeground(Color.WHITE);
         next.setBackground(Color.BLACK);
-        next.addActionListener(e -> {
-            pane.setSelectedIndex(1);
-        });
+        next.addActionListener(e -> pane.setSelectedIndex(1));
         basicPanel.add(next);
 
-        back = new JButton("Back");
+        JButton back = new JButton("Back");
         back.setBounds(25, 125, 45, 25);
         back.setBackground(Color.white);
         back.addActionListener(e -> {
@@ -268,7 +257,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(frame, "Missing Fields");
             } else {
                 int randomNumber = (int) (Math.random() * 99) + 1;
-                eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. Here's a gift! Your confirmation code!\n\nYour code: " + randomNumber +  "\n\nThank you,\nScholarly");
+                eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nThis is a bot who is just making sure your email works. Here's a gift! Your confirmation code!\n\nYour code: " + randomNumber + "\n\nThank you,\nScholarly");
                 int userNumber = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirmation Code"));
                 if (userNumber != randomNumber) {
                     JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
@@ -363,9 +352,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
         next.setBounds(100, 250, 90, 25);
         next.setForeground(Color.WHITE);
         next.setBackground(Color.BLACK);
-        next.addActionListener(e -> {
-            pane.setSelectedIndex(1);
-        });
+        next.addActionListener(e -> pane.setSelectedIndex(1));
         basicPanel.add(next);
 
         JPanel loginPanel = new JPanel();
@@ -415,7 +402,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
             } else {
                 if (!email.getText().equals(currentData.getString("email"))) {
                     int randomNumber = (int) (Math.random() * 99) + 1;
-                    eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nLooks like you changed your email! Here's you're confirmation code!\n\nYour code: " + randomNumber +  "\n\nThank you,\nScholarly");
+                    eh.sendEmail(email.getText(), "Confirming Your Email", "Hello!\n\nLooks like you changed your email! Here's you're confirmation code!\n\nYour code: " + randomNumber + "\n\nThank you,\nScholarly");
                     int userNumber = Integer.parseInt(JOptionPane.showInputDialog(frame, "Confirmation Code"));
                     if (userNumber != randomNumber) {
                         JOptionPane.showMessageDialog(frame, "Your email was invalid. Please try again.");
@@ -427,8 +414,6 @@ public class WelcomeFrame extends JFrame implements ActionListener {
             }
         });
         loginPanel.add(register);
-
-        loginPanel.add(back);
 
         pane.add(BASIC_INFO, basicPanel);
         pane.add(LOGIN_INFO, loginPanel);

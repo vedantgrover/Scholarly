@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MoreScrollPaneTesting {
-    private JTextField field1 = new JTextField();
-    private JButton addBtn = new JButton("Save: ");
+    private final JTextField field1 = new JTextField();
+    private final JButton addBtn = new JButton("Save: ");
 
     public void addComponents(Container pane) {
         pane.setLayout(new GridBagLayout());
@@ -25,7 +25,8 @@ public class MoreScrollPaneTesting {
         c.gridy = 1;
         pane.add(addBtn, c);
     }
-    public MoreScrollPaneTesting()  {
+
+    public MoreScrollPaneTesting() {
         //Create and set up the window.
         JFrame frame = new JFrame("NAME");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

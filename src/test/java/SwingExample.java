@@ -1,6 +1,6 @@
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class SwingExample {
 
@@ -32,12 +32,7 @@ public class SwingExample {
         frame.setVisible(true);
     }
 
-    public static void main(String args[]) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+    public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(SwingExample::createAndShowGUI);
     }
 }
