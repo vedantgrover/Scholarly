@@ -4,34 +4,26 @@ import VAC.MongoDB;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 
-import javax.print.Doc;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class StudentRequests extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
     private static final int HEIGHT = 400;
 
-    private static MongoDB db = ScholarlyFrame.db;
+    private static final MongoDB db = ScholarlyFrame.db;
 
-    private static JPanel descriptionPanel = new JPanel();
-
-    private static ArrayList<JButton> studentRButtons = new ArrayList<JButton>();
-    private static ArrayList<Document> studentRData = new ArrayList<Document>();
+    private static final JPanel descriptionPanel = new JPanel();
 
     protected static JButton approveButton, declineButton, currentButton;
-    private JTextArea studentRText = new JTextArea();
+    private final JTextArea studentRText = new JTextArea();
 
-    private JPanel panel;
-    private JFrame myFrame;
-    private JScrollPane pane;
-
-    private FindIterable<Document> docs;
+    private final JPanel panel;
+    private final JFrame myFrame;
+    private final JScrollPane pane;
 
     private String currentUser = "";
 
@@ -58,7 +50,7 @@ public class StudentRequests extends JFrame implements ActionListener {
         this.getContentPane().add(approveButton);
         this.getContentPane().add(declineButton);
 
-        docs = db.getStudentRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        FindIterable<Document> docs = db.getStudentRequests(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(200, 1));
@@ -105,7 +97,7 @@ public class StudentRequests extends JFrame implements ActionListener {
 
     private void approve() {
         Document doc = db.findUser(currentUser);
-        db.tutorStudentConnect(doc.getString("username"), true, doc.getString("description"));
+        db.tutorStudentConnect(doc.getString("username"), true);
         panel.remove(currentButton);
         panel.revalidate();
         panel.repaint();
@@ -126,7 +118,7 @@ public class StudentRequests extends JFrame implements ActionListener {
 
     private void decline() {
         Document doc = db.findUser(currentUser);
-        db.tutorStudentConnect(doc.getString("username"), false, doc.getString("description"));
+        db.tutorStudentConnect(doc.getString("username"), false);
         panel.remove(currentButton);
         panel.revalidate();
         panel.repaint();
@@ -162,5 +154,6 @@ public class StudentRequests extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+    }
 }

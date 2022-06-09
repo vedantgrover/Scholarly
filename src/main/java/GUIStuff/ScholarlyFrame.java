@@ -25,12 +25,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     protected static JFrame myFrame;
 
-    private static JPanel tutorPanel = new JPanel();
+    private static final JPanel tutorPanel = new JPanel();
 
     private static final int maxTutors = 200;
 
-    private static final ArrayList<Document> tutors = new ArrayList<Document>();
-    private static final ArrayList<JButton> tutorButtons = new ArrayList<JButton>();
+    private static final ArrayList<JButton> tutorButtons = new ArrayList<>();
 
     private static JButton tutorRemoveButton;
 
@@ -39,13 +38,13 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     protected static JScrollPane pane;
     protected static JPanel panel;
 
-    private static JPanel descriptionPanel = new JPanel();
+    private static final JPanel descriptionPanel = new JPanel();
 
-    private JTextArea tutorDescription = new JTextArea();
+    private final static JTextArea tutorDescription = new JTextArea();
 
     protected static FindIterable<Document> docs;
 
-    private String currentUser = "";
+    private static String currentUser = "";
 
     public ScholarlyFrame() {
         myFrame = this;
@@ -79,9 +78,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
         JButton name = new JButton(db.findUser(WelcomeFrame.username.getText()).get("name").toString());
         name.setBounds(WIDTH / 2 - 75, 10, 150, 25);
-        name.addActionListener(e -> {
-            wf.editRegister();
-        });
+        name.addActionListener(e -> wf.editRegister());
         loginInfoPanel.add(name);
 
         if (db.findUser(WelcomeFrame.username.getText()).getBoolean("isAdmin")) {
@@ -194,11 +191,11 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void updateDescription() {
+    private static void updateDescription() {
         descriptionPanel.removeAll();
 
         descriptionPanel.setLayout(null);
-        descriptionPanel.setBounds(WIDTH / 3, 45, (WIDTH * 2/3) - 15, pane.getHeight());
+        descriptionPanel.setBounds(WIDTH / 3, 45, (WIDTH * 2 / 3) - 15, pane.getHeight());
 
         tutorDescription.setText(ScholarlyFrame.studentInfo(db.findUser(currentUser)));
         tutorDescription.setBounds(10, 10, 434, 300);
@@ -213,42 +210,26 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
         descriptionPanel.repaint();
     }
 
-    public static String studentInfo(Document doc) { 
+    public static String studentInfo(Document doc) {
         return "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
-        + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
+                + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
     }
 
     public static void createNewTutorButton(Document doc) {
         JButton tutorButton = new JButton(doc.getString("name"));
         tutorButton.setPreferredSize(new Dimension(pane.getWidth(), 100));
         tutorButton.addActionListener(e -> {
-            // System.out.println(doc.getString("name"));
+            currentUser = doc.getString("username");
+            tutorRemoveButton.setEnabled(true);
 
-            tutorPanel.removeAll();
+            System.out.println(currentUser);
 
-            tutorPanel.setLayout(null);
-            tutorPanel.setBounds(333, 45, 652, 370);
-
-            String tutorInfo = "Name: " + doc.getString("name") + "\n\nPhone Number: " + doc.getString("number")
-                    + "\nEmail: " + doc.getString("email") + "\n\n" + doc.getString("description");
-            JTextArea tutorIDisplay = new JTextArea(tutorInfo);
-            tutorIDisplay.setBounds(10, 10, 642, 370);
-            tutorIDisplay.setLineWrap(true);
-            tutorIDisplay.setWrapStyleWord(true);
-            tutorIDisplay.setEditable(false);
-            tutorIDisplay.setOpaque(false);
-            tutorPanel.add(tutorIDisplay);
-            // Create Request Button for Tutors
-
-            tutorPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-            tutorPanel.revalidate();
-            tutorPanel.repaint();
+            updateDescription();
         });
         panel.add(tutorButton);
-        tutors.add(db.findUser(doc.getString("username")));
         tutorButtons.add(tutorButton);
     }
-    
+
     public static void removeTutorButton(Document doc) {
         for (JButton cb : tutorButtons) {
             if (cb.getText().equals(doc.getString("name"))) {
@@ -260,5 +241,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+    }
 }

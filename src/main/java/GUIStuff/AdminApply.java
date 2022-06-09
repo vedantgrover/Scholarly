@@ -8,35 +8,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class AdminApply extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
     private static final int HEIGHT = 400;
 
-    private static MongoDB db = ScholarlyFrame.db;
+    private static final MongoDB db = ScholarlyFrame.db;
 
-    private static JPanel descriptionPanel = new JPanel();
+    protected static JButton approveButton;
+    protected static JButton currentButton;
 
-    private static ArrayList<JButton> tutorRButtons = new ArrayList<JButton>();
-    private static ArrayList<Document> tutorRData = new ArrayList<Document>();
-
-    protected static JButton approveButton, declineButton, currentButton;
-    private JTextArea tutorRText = new JTextArea();
-
-    private JPanel panel;
-    private JFrame myFrame;
-    private JScrollPane pane;
-
-    private FindIterable<Document> docs;
+    private final JPanel panel;
+    private final JFrame myFrame;
+    private final JScrollPane pane;
 
     private String currentUser = "";
 
     public AdminApply() {
         approveButton = new JButton("Approve");
-        //declineButton = new JButton("Decline");
 
         myFrame = this;
         this.setTitle("Create Admin");
@@ -47,16 +37,14 @@ public class AdminApply extends JFrame implements ActionListener {
         this.setFocusable(true);
         this.setLayout(null);
 
-        approveButton.setBounds(WIDTH / 3, 0, (WIDTH * 2)/3 - 15, HEIGHT - 40);
+        approveButton.setBounds(WIDTH / 3, 0, (WIDTH * 2) / 3 - 15, HEIGHT - 40);
         approveButton.setEnabled(false);
-        //declineButton.setBounds(WIDTH / 3, 310, 226, 50);
 
         approveButton.addActionListener(e -> approve());
-        //declineButton.addActionListener(e -> decline());
 
         this.getContentPane().add(approveButton);
 
-        docs = db.getAllStudents(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
+        FindIterable<Document> docs = db.getAllStudents(db.findUser(WelcomeFrame.username.getText()).getString("organization"));
 
         panel = new JPanel();
         panel.setLayout(new GridLayout(200, 1));
@@ -80,7 +68,7 @@ public class AdminApply extends JFrame implements ActionListener {
 
     private void approve() {
         Document doc = db.findUser(currentUser);
-        //New method here
+
         db.convertToAdmin(currentUser);
         panel.remove(currentButton);
         panel.revalidate();
@@ -111,7 +99,7 @@ public class AdminApply extends JFrame implements ActionListener {
                 System.out.println(currentUser);
 
                 approveButton.setEnabled(true);
-                
+
             });
             panel.add(studentButton);
         }
@@ -122,5 +110,4 @@ public class AdminApply extends JFrame implements ActionListener {
         // TODO Auto-generated method stub
 
     }
-
 }
