@@ -18,7 +18,7 @@ public class ImagePanelTester {
 		JFrame f= new JFrame("Panel with image");    
 		JPanel panel=new JPanel();  
 		panel.setLayout(new FlowLayout());      
-		BufferedImage myPicture = ImageIO.read(new File("C:\\Users\\306972\\Desktop\\Scholarly\\src\\main\\java\\GUIStuff\\logo.png"));
+		BufferedImage myPicture = ImageIO.read(new File("C:\\Users\\306972\\Desktop\\Scholarly\\src\\main\\java\\GUIStuff\\logo1.png"));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		panel.add(picLabel);
 		f.add(panel);

@@ -8,31 +8,17 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
-
-import GUIStuff.WelcomeFrame;
-
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.util.UUID;
 
-/**
- * The Code that I wrote within this class is a bit of an example on what we
- * COULD do when we register users into the DB.
- * Obvisously we will get all the data with user input. But this will be how it
- * gets registered into the database. We'll make it work.
- * This what I have learnt so far. I will be learning more later.
- */
-
 public class MongoDB {
-    private static MongoClient mongoClient;
-    private static MongoDatabase database;
     public static MongoCollection<Document> data;
 
     public MongoDB() {
-        mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
-        database = mongoClient.getDatabase("VAC");
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
+        MongoDatabase database = mongoClient.getDatabase("VAC");
         data = database.getCollection("userData");
     }
 
@@ -46,13 +32,8 @@ public class MongoDB {
         return data.find(new Document("username", username)).first();
     }
 
-    public Document findUserByName(String name) {
-        return data.find(new Document("name", name)).first();
-    }
-
     public boolean createUser(String firstName, String lastName, String email, String phoneNumber, String org,
                               String username, String password) {
-        boolean isAdmin = false;
         if (checkIfUserExists(username)) {
             return false;
         }
@@ -74,53 +55,88 @@ public class MongoDB {
         return true;
     }
 
-    public boolean editUser(String firstName, String lastName, String email, String phoneNumber, String org,
-                              String username, String password, String description) {
+    public void editUser(String firstName, String lastName, String email, String phoneNumber, String org,
+                         String username, String password, String description) {
         if (!checkIfUserExists(username)) {
-            return false;
+            return;
         }
 
         Document query = new Document("username", username);
 
         Bson updates = Updates.combine(
-            Updates.set("name", firstName + " " + lastName),
-            Updates.set("email", email),
-            Updates.set("number", phoneNumber),
-            Updates.set("organization", org),
-            Updates.set("username", username),
-            Updates.set("password", password),
-            Updates.set("description", description)
+                Updates.set("name", firstName + " " + lastName),
+                Updates.set("email", email),
+                Updates.set("number", phoneNumber),
+                Updates.set("organization", org),
+                Updates.set("username", username),
+                Updates.set("password", password),
+                Updates.set("description", description)
         );
 
         UpdateOptions options = new UpdateOptions().upsert(true);
 
         try {
-            UpdateResult result = data.updateOne(query, updates, options);
+            data.updateOne(query, updates, options);
         } catch (MongoException me) {
             me.printStackTrace();
         }
-        return true;
+    }
+
+    public void convertToAdmin(String username) {
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.combine(
+                Updates.set("isAdmin", true),
+                Updates.set("isTutor", false),
+                Updates.set("status", "none"),
+                Updates.set("description", "")
+        );
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            me.printStackTrace();
+        }
+    }
+
+    public void removeTutor(String username) {
+        Document query = new Document("username", username);
+
+        Bson updates = Updates.set("isTutor", false);
+
+        UpdateOptions options = new UpdateOptions().upsert(true);
+
+        try {
+            data.updateOne(query, updates, options);
+        } catch (MongoException me) {
+            me.printStackTrace();
+        }
+    }
+
+    public FindIterable<Document> getAllStudents(String org) {
+        Document query = new Document("organization", org).append("isAdmin", false);
+
+        return data.find(query);
     }
 
     public FindIterable<Document> getTutors(String org) {
         Document query = new Document("organization", org).append("isTutor", true);
-        FindIterable<Document> docs = data.find(query);
 
-        return docs;
+        return data.find(query);
     }
 
     public FindIterable<Document> getTutorRequests(String org) {
         Document query = new Document("organization", org).append("status", "aTutor").append("isAdmin", false).append("isTutor", false);
-        FindIterable<Document> docs = data.find(query);
 
-        return docs;
+        return data.find(query);
     }
-    
-    public FindIterable<Document> getStudentRequests(String org) {
-        Document query = new Document("organization",org).append("status", "aStudent").append("isTutor", false).append("isAdmin", false);
-        FindIterable<Document> docs = data.find(query);
 
-        return docs;
+    public FindIterable<Document> getStudentRequests(String org) {
+        Document query = new Document("organization", org).append("status", "aStudent").append("isTutor", false).append("isAdmin", false);
+
+        return data.find(query);
     }
 
     public void makeTutorRequest(String username, String description) {
@@ -138,21 +154,20 @@ public class MongoDB {
         UpdateOptions options = new UpdateOptions().upsert(true);
 
         try {
-            UpdateResult result = data.updateOne(query, updates, options);
+            data.updateOne(query, updates, options);
         } catch (MongoException me) {
             System.err.println("Unable to update due to an error: " + me);
         }
     }
 
-    Document queryLol;
-    public void studentSubjectRequest(String username, String description){
+    public void studentSubjectRequest(String username, String description) {
         //works
         if (!checkIfUserExists(username)) {
             return;
         }
 
-        queryLol = new Document("username", username);
-        
+        Document query = new Document("username", username);
+
         Bson updates = Updates.combine(
                 Updates.set("status", "aStudent"),
                 Updates.set("description", description)
@@ -160,43 +175,13 @@ public class MongoDB {
         UpdateOptions options = new UpdateOptions().upsert(true);
 
         try {
-            UpdateResult result = data.updateOne(queryLol, updates, options);
+            data.updateOne(query, updates, options);
         } catch (MongoException me) {
             System.err.println("Unable to update due to an error: " + me);
         }
 
     }
 
-    
-
-    public void recruitNewTutor(String username, boolean approve) {
-        Document query2 = new Document("username", username);
-        
-        if (approve) {
-            Bson updates = Updates.combine(
-                    Updates.set("description", "none")
-            );
-
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            queryLol.remove(username);
-
-            try {
-                UpdateResult result = data.updateOne(queryLol, updates, options);
-            } catch (MongoException me) {
-                System.err.println(me);
-            }
-        } else {
-            Bson updates = Updates.set("description", "none");
-
-            UpdateOptions options = new UpdateOptions().upsert(true);
-
-            try {
-                UpdateResult result = data.updateOne(query2, updates, options);
-            } catch (MongoException me) {
-                System.err.println(me);
-            }
-        }
-    }
 
     public void recruit(String username, boolean approve) {
         Document query = new Document("username", username);
@@ -209,9 +194,9 @@ public class MongoDB {
             UpdateOptions options = new UpdateOptions().upsert(true);
 
             try {
-                UpdateResult result = data.updateOne(query, updates, options);
+                data.updateOne(query, updates, options);
             } catch (MongoException me) {
-                System.err.println(me);
+                me.printStackTrace();
             }
         } else {
             Bson updates = Updates.set("status", "none");
@@ -219,38 +204,38 @@ public class MongoDB {
             UpdateOptions options = new UpdateOptions().upsert(true);
 
             try {
-                UpdateResult result = data.updateOne(query, updates, options);
+                data.updateOne(query, updates, options);
             } catch (MongoException me) {
-                System.err.println(me);
+                me.printStackTrace();
             }
         }
     }
 
-    public void tutorStudentConnect(String username, boolean approve, String description) { 
+    public void tutorStudentConnect(String username, boolean approve) {
         Document query = new Document("username", username);
         if (approve) {
             Bson updates = Updates.combine(
-                Updates.set("status", "none"),
-                Updates.set("description", "")
-        );
+                    Updates.set("status", "none"),
+                    Updates.set("description", "")
+            );
             UpdateOptions options = new UpdateOptions().upsert(false);
 
             try {
-                UpdateResult result = data.updateOne(query, updates, options);
+                data.updateOne(query, updates, options);
             } catch (MongoException me) {
-                System.err.println(me);
+                me.printStackTrace();
             }
         } else {
             Bson updates = Updates.combine(
-                Updates.set("status", "none"),
-                Updates.set("description", "")
+                    Updates.set("status", "none"),
+                    Updates.set("description", "")
             );
             UpdateOptions options = new UpdateOptions().upsert(true);
 
             try {
-                UpdateResult result = data.updateOne(query, updates, options);
+                data.updateOne(query, updates, options);
             } catch (MongoException me) {
-                System.err.println(me);
+                me.printStackTrace();
             }
         }
     }
