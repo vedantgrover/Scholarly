@@ -128,7 +128,7 @@ public class MongoDB {
     }
 
     public FindIterable<Document> getTutorRequests(String org) {
-        Document query = new Document("organization", org).append("status", "aTutor").append("isAdmin", false).append("isTutor", false);
+        Document query = new Document("organization", org).append("status", "aTutor").append("isAdmin", false);
 
         return data.find(query);
     }
