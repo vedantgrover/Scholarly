@@ -3,6 +3,9 @@ package VAC;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.util.Properties;
 
 public class EmailHandler {
@@ -21,7 +24,7 @@ public class EmailHandler {
         session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("scholarlyreplybot@gmail.com", "zxaihisvsrnezqup");
+                return new PasswordAuthentication("scholarlyreplybot@gmail.com", Dotenv.load().get("SCHOLARLY_PASSWORD"));
             }
         });
 

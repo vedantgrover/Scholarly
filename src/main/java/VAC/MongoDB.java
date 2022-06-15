@@ -8,6 +8,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -17,7 +20,7 @@ public class MongoDB {
     public static MongoCollection<Document> data;
 
     public MongoDB() {
-        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb+srv://vac:LfXrbCO7JrH9PgLC@scholarly.l7vvy.mongodb.net/?retryWrites=true&w=majority"));
+        MongoClient mongoClient = new MongoClient(new MongoClientURI(Dotenv.load().get("MONGODB_SRV")));
         MongoDatabase database = mongoClient.getDatabase("VAC");
         data = database.getCollection("userData");
     }
