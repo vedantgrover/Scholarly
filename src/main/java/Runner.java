@@ -4,7 +4,6 @@ public class Runner {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         new ScholarlyFrame();
-
         /*
          * TODO:
          * Agenda:
@@ -19,7 +18,7 @@ public class Runner {
          * - ✅ Review Student Applications (@Jericoz-JC)
          * - ✅ Debug repeated button actions (@vedantgrover)
          * - ❌ Create command box
-         * ➡️Soft Launch Happens
+         *   ✅ Soft Launch Happens
          * - Make the Wix Site for downloading and collecting payment for software
          * (lifetime for now. will change to monthly once we figure out how) (@AshGampa)
          * - Create the Discord Server. (@vedantgrover & @AshGampa & @Jericoz-JC)

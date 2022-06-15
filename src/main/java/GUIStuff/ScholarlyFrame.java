@@ -25,8 +25,6 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     protected static JFrame myFrame;
 
-    private static final JPanel tutorPanel = new JPanel();
-
     private static final int maxTutors = 200;
 
     private static final ArrayList<JButton> tutorButtons = new ArrayList<>();
