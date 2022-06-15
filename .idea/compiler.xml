@@ -7,8 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="TestMaven" />
-        <module name="ScholarlyMaven" />
+        <module name="Scholarly" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ScholarlyMaven" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
