@@ -31,7 +31,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
 
     private static final ArrayList<JButton> tutorButtons = new ArrayList<>();
 
-    private static JButton tutorRemoveButton;
+    private static JButton tutorRemoveButton, applyButton;
 
     protected static BufferedImage image;
 
@@ -151,9 +151,8 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             applyButton1.addActionListener(e -> new AdminApply());
             this.getContentPane().add(applyButton1);
         } else {
-            JButton applyButton = new JButton("Apply");
+            applyButton = new JButton("Apply");
             applyButton.setBounds(0, 415, pane.getWidth(), 150);
-            applyButton.addActionListener(e -> new TutorApply());
             this.getContentPane().add(applyButton);
         }
         if (!data.getBoolean("isAdmin") && !data.getBoolean("isTutor")) {
@@ -161,11 +160,15 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
             button2.setBounds(333, 415, 660, 150);
             button2.addActionListener(e -> new StudentApply());
             this.getContentPane().add(button2);
+
+            applyButton.addActionListener(e -> new TutorApply());
         } else if (data.getBoolean("isTutor")) {
             JButton button3 = new JButton("Student Requests");
             button3.setBounds(333, 415, 660, 150);
             button3.addActionListener(e -> new StudentRequests());
             this.getContentPane().add(button3);
+
+            applyButton.addActionListener(e -> new StudentApply());
         }
 
         this.pack();
