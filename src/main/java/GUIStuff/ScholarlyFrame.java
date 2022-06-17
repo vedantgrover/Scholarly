@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class ScholarlyFrame extends JFrame implements ActionListener {
     public ScholarlyFrame() {
         myFrame = this;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
+            image = ImageIO.read(new FileInputStream("C:\\Users\\vedan\\OneDrive\\Desktop\\Scholarly\\src\\main\\java\\GUIStuff\\logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

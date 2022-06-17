@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class WelcomeFrame extends JFrame implements ActionListener {
 
     public WelcomeFrame() {
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/GUIStuff/logo.png")));
+            image = ImageIO.read(new FileInputStream("C:\\Users\\vedan\\OneDrive\\Desktop\\Scholarly\\src\\main\\java\\GUIStuff\\logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
