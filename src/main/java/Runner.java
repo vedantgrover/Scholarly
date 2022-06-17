@@ -5,11 +5,6 @@ public class Runner {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         new ScholarlyFrame();
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 29717eb9ae8e5fa9e07013627534b03512909ae1
         /*
          * TODO:
          * Agenda:

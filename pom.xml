@@ -19,21 +19,9 @@
             <version>1.6.2</version>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-            <groupId>
-                io.github.cdimascio
-            </groupId>
-            <artifactId>
-                dotenv-java
-            </artifactId>
-            <version>
-                2.2.4
-            </version>
-=======
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
             <version>2.2.4</version>
->>>>>>> 29717eb9ae8e5fa9e07013627534b03512909ae1
         </dependency>
     </dependencies>
 
